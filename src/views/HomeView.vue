@@ -1,7 +1,7 @@
 <template>
   <main class="relative">
     <!-- Hero Section -->
-    <section class="relative section-container pt-6 md:pt-10 lg:pt-12 pb-16 md:pb-20 lg:pb-24 min-h-[70vh] flex items-center">
+    <section class="relative section-container pt-10 md:pt-16 lg:pt-20 pb-16 md:pb-20 lg:pb-24 min-h-[70vh] flex items-center">
       <!-- Background decorations -->
       <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
         <div class="absolute -top-10 -left-10 w-56 h-56 bg-amber-300/10 rounded-full blur-3xl"></div>
@@ -44,10 +44,20 @@
               height="1000"
               decoding="async"
               class="w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full border-4 animated-border pict object-cover"
-              src="https://media.licdn.com/dms/image/v2/D4E03AQFT-AmAqVtJ5A/profile-displayphoto-shrink_200_200/B4EZQL6XyoHsAY-/0/1735366641355?e=2147483647&v=beta&t=lsNyzyIcJBr730S7sgQ40PRCxw-Qu236eqRQrMriz9U"
+              src="/profile.png"
             />
             <!-- Rainbow radial bars synced to music, clipped around photo circle -->
-            <AvatarVisualizer :innerRatio="1.0" :edgeOffset="3" :gain="1.45" :barWidth="3" :bars="200" />
+            <AvatarVisualizer
+              :innerRatio="1.0"
+              :useOuterWrapper="true"
+              :gapOutside="2"
+              :edgeOffset="0"
+              imageSelector=".pict"
+              :gain="1.2"
+              :barWidth="3"
+              :lengthScale="0.6"
+              :bars="200"
+            />
           </div>
         </div>
       </div>
@@ -129,10 +139,10 @@ export default {
       loopNum: 0,
       isDeleting: false,
       metrics: [
-        { label: 'Projects', current: 0, target: 12 },
-        { label: 'Happy Clients', current: 0, target: 8 },
-        { label: 'Cups of Coffee', current: 0, target: 321 },
-        { label: 'Commits', current: 0, target: 1500 }
+        { label: 'Projects', current: 0, target: 3 },
+        { label: 'Happy Clients', current: 0, target: 3 },
+        { label: 'Cups of Coffee', current: 0, target: 3 },
+        { label: 'Commits', current: 0, target: 3 }
       ],
     };
   },

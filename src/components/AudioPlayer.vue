@@ -1,16 +1,17 @@
 <template>
   <div
-    class="fixed bottom-4 left-4 z-[130] select-none"
+    class="fixed bottom-6 sm:bottom-8 md:bottom-10 left-4 sm:left-5 md:left-6 z-[99] select-none"
     role="region"
     aria-label="Audio player"
   >
     <!-- Play / Pause only (styled like social buttons) -->
     <button
       :class="[
-        'inline-flex items-center justify-center w-8 h-8 rounded-full text-white shadow transition focus:outline-none',
+        'inline-flex items-center justify-center rounded-full text-white shadow transition focus:outline-none',
+        'w-8 h-8',
         isPlaying
-          ? 'bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-400 ring-2 ring-amber-300/40 animate-pulse'
-          : 'bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400 hover:brightness-110 ring-2 ring-white/20'
+          ? 'bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-400 animate-pulse'
+          : 'bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400 hover:brightness-110'
       ]"
       :aria-label="isPlaying ? 'Pause' : 'Play'"
       @click="togglePlay"
@@ -44,6 +45,7 @@ export default {
       source: null,
       rafId: 0,
       levelSmooth: 0,
+      isConnected: false,
     }
   },
   computed: {
@@ -58,11 +60,29 @@ export default {
     const enable = () => { this.interacted = true; window.removeEventListener('click', enable); window.removeEventListener('keydown', enable) }
     window.addEventListener('click', enable, { once: true })
     window.addEventListener('keydown', enable, { once: true })
+
+    // Ensure button resets when audio ends
+    const audio = this.$refs.audio
+    if (audio) {
+      audio.addEventListener('ended', this.onEnded)
+    }
   },
   beforeUnmount() {
     this.stopAnalyser()
+    const audio = this.$refs.audio
+    if (audio) {
+      audio.removeEventListener('ended', this.onEnded)
+    }
   },
   methods: {
+    onEnded() {
+      const audio = this.$refs.audio
+      if (!audio) return
+      this.isPlaying = false
+      // reset playback head to start for consistent UX
+      try { audio.currentTime = 0 } catch (_) { /* noop */ }
+      this.stopAnalyser()
+    },
     async togglePlay() {
       const audio = this.$refs.audio
       if (!audio) return
@@ -93,10 +113,22 @@ export default {
         this.analyser = this.analyser || this.audioCtx.createAnalyser()
         this.analyser.fftSize = 512
         this.analyser.smoothingTimeConstant = 0.8
-        // recreate source to avoid InvalidStateError
-        this.source = this.audioCtx.createMediaElementSource(el)
-        this.source.connect(this.analyser)
-        this.analyser.connect(this.audioCtx.destination)
+        // IMPORTANT: create MediaElementSource ONLY ONCE per <audio>
+        if (!this.source) {
+          this.source = this.audioCtx.createMediaElementSource(el)
+        }
+        // Connect graph if not already connected
+        if (!this.isConnected) {
+          try { this.source.connect(this.analyser) } catch (_) { void 0 }
+          try { this.analyser.connect(this.audioCtx.destination) } catch (_) { void 0 }
+          this.isConnected = true
+        }
+        // Expose globally so late-mounted visualizers can attach
+        try {
+          window.__audioAnalyser = this.analyser
+          window.__audioCtx = this.audioCtx
+          window.__audioIsPlaying = true
+        } catch (_) { /* noop */ }
         // Notify listeners that analyser is ready
         window.dispatchEvent(new CustomEvent('audio-visualizer-ready', { detail: { analyser: this.analyser, audioCtx: this.audioCtx } }))
 
@@ -127,17 +159,19 @@ export default {
     },
     stopAnalyser() {
       cancelAnimationFrame(this.rafId)
-      this.rafId = 0
       this.levelSmooth = 0
       document.documentElement.style.setProperty('--beat', '0')
       // Notify listeners to stop
-      try { window.dispatchEvent(new CustomEvent('audio-visualizer-stop')) } catch (_) { /* noop */ }
+      try { window.dispatchEvent(new CustomEvent('audio-visualizer-stop')) } catch (_) { void 0 }
       try {
-        if (this.source) { this.source.disconnect(); this.source = null }
-        if (this.analyser) { this.analyser.disconnect() }
+        if (this.source && this.isConnected) { try { this.source.disconnect() } catch(_) { void 0 } }
+        if (this.analyser) { try { this.analyser.disconnect() } catch(_) { void 0 } }
+        this.isConnected = false
       } catch (_) { void 0 }
-    }
-  }
+      // Keep global references but mark not playing
+      try { window.__audioIsPlaying = false } catch (_) { void 0 }
+    },
+  },
 }
 </script>
 

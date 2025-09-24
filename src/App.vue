@@ -104,32 +104,29 @@
     </div>
 
     <!-- Floating Social Buttons -->
-    <div class="fixed bottom-4 right-4 z-[99] group">
+    <div class="fixed bottom-6 sm:bottom-8 md:bottom-10 right-4 sm:right-5 md:right-6 z-[99] group">
       <!-- Child buttons -->
       <div class="flex flex-col items-end space-y-2 mb-2 transition duration-200 ease-out origin-bottom-right opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100"
            :class="socialOpen ? 'opacity-100 scale-100' : ''">
         <!-- LinkedIn -->
         <a href="https://id.linkedin.com/in/febrian-sitorus" target="_blank" rel="noopener" aria-label="Open LinkedIn"
-           class="flex items-center gap-2">
-          <span class="px-2 py-1 text-xs rounded-md bg-[#1e1e1e] text-white border border-white/10 shadow hidden sm:inline-block">LinkedIn</span>
-          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
-            <img class="w-5 h-5" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/600px-LinkedIn_logo_initials.png" alt="LinkedIn" />
+           class="inline-flex items-center">
+          <span class="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
+            <img class="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/600px-LinkedIn_logo_initials.png" alt="LinkedIn" />
           </span>
         </a>
         <!-- Instagram -->
         <a href="https://www.instagram.com/febrianpane/." target="_blank" rel="noopener" aria-label="Open Instagram"
-           class="flex items-center gap-2">
-          <span class="px-2 py-1 text-xs rounded-md bg-[#1e1e1e] text-white border border-white/10 shadow hidden sm:inline-block">Instagram</span>
-          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
-            <img class="w-5 h-5" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" alt="Instagram" />
+           class="inline-flex items-center">
+          <span class="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
+            <img class="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" alt="Instagram" />
           </span>
         </a>
         <!-- GitHub -->
         <a href="https://github.com/Febrianpane" target="_blank" rel="noopener" aria-label="Open GitHub"
-           class="flex items-center gap-2">
-          <span class="px-2 py-1 text-xs rounded-md bg-[#1e1e1e] text-white border border-white/10 shadow hidden sm:inline-block">GitHub</span>
-          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
-            <img class="w-5 h-5" src="https://seeklogo.com/images/G/github-logo-2E3852456C-seeklogo.com.png" alt="GitHub" />
+           class="inline-flex items-center">
+          <span class="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
+            <img class="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6" src="https://seeklogo.com/images/G/github-logo-2E3852456C-seeklogo.com.png" alt="GitHub" />
           </span>
         </a>
       </div>

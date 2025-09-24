@@ -4,7 +4,12 @@ export default {
   components: { SectionHeader },
   data() {
     return {
-      // About page has no modal or skills now
+      // Dummy data to render Certificates UI without local files
+      certs: [
+        { id: 1, title: 'Responsive Web Design', issuer: 'Coursera', year: '2024', url: '#', logo: 'https://picsum.photos/seed/coursera/64/64', image: 'https://picsum.photos/id/1015/800/480' },
+        { id: 2, title: 'Foundations of UI/UX', issuer: 'Google', year: '2024', url: '#', logo: 'https://picsum.photos/seed/google/64/64', image: 'https://picsum.photos/id/1016/800/480' },
+        { id: 3, title: 'JavaScript Algorithms', issuer: 'freeCodeCamp', year: '2023', url: '#', logo: 'https://picsum.photos/seed/fcc/64/64', image: 'https://picsum.photos/id/1025/800/480' },
+      ],
     };
   },
   mounted() {
@@ -44,8 +49,7 @@ export default {
         <div class="flex justify-center md:justify-start md:w-5/12 reveal reveal-scale">
           <img
             class="w-40 h-40 md:w-56 md:h-56 rounded-2xl object-cover border border-white/10 shadow-xl ring-4 ring-amber-300/10 transition-transform duration-300 hover:scale-[1.03] animate-ring-soft"
-            src="https://media.licdn.com/dms/image/v2/D4E03AQFT-AmAqVtJ5A/profile-displayphoto-shrink_200_200/B4EZQL6XyoHsAY-/0/1735366641355?e=2147483647&v=beta&t=lsNyzyIcJBr730S7sgQ40PRCxw-Qu236eqRQrMriz9U"
-            alt="Foto"
+            src="/profile1.png"
           />
         </div>
         <div class="md:w-7/12">
@@ -103,6 +107,36 @@ export default {
       </div>
     </div>
   </div>
+
+  <!-- Certificates (own layout) -->
+  <section class="px-4 sm:px-8 lg:px-10 mt-10">
+    <SectionHeader title="Certificates" subtitle="Proof of skills and achievements" align="left" />
+    <!-- Cards grid -->
+    <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <article
+        v-for="c in certs"
+        :key="c.id"
+        class="group rounded-xl border border-white/10 bg-white/60 dark:bg-[#1e1e1f]/60 p-4 hover:shadow-lg transition backdrop-blur-sm"
+      >
+        <div class="flex items-start gap-3">
+          <img :src="c.logo" :alt="c.issuer" class="w-9 h-9 object-contain opacity-90" />
+          <div>
+            <h3 class="text-slate-900 dark:text-white font-semibold leading-tight">{{ c.title }}</h3>
+            <p class="text-xs text-slate-700 dark:text-gray-400">{{ c.issuer }} • {{ c.year }}</p>
+          </div>
+        </div>
+        <div class="mt-3 rounded-lg overflow-hidden bg-black/5 dark:bg-white/5">
+          <img :src="c.image" :alt="c.title" class="w-full h-40 object-cover" />
+        </div>
+        <div class="mt-3 flex justify-between items-center">
+          <a :href="c.url" target="_blank" rel="noopener" class="text-amber-600 dark:text-amber-300 text-sm hover:underline">View credential</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- Spacer for bottom breathing room -->
+    <div class="mt-8 h-8 md:h-12"></div>
+  </section>
 
   
   
