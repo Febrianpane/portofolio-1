@@ -3,3 +3,224 @@
 @tailwind components;
 
 @tailwind utilities;
+
+@layer base {
+  /* Light as default */
+  body {
+    @apply bg-white text-slate-800;
+  }
+  a {
+    @apply text-slate-900;
+  }
+  /* Dark when .dark on <html> */
+  .dark body {
+    @apply bg-[#0b0b0b] text-slate-100;
+  }
+  .dark a {
+    @apply text-white;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-slate-900;
+  }
+  .dark h1,
+  .dark h2,
+  .dark h3,
+  .dark h4 {
+    @apply text-white;
+  }
+}
+
+@layer components {
+  /* Containers */
+  .section-container {
+    @apply container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8;
+  }
+
+  /* Cards */
+  .glass-card {
+    /* Light default: solid white for maximum clarity */
+    @apply rounded-2xl border border-black/10 bg-white backdrop-blur-sm shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] transition-colors;
+  }
+  .dark .glass-card {
+    @apply border-white/10 bg-white/[0.05] shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)];
+  }
+  .glass-card-hover:hover {
+    @apply bg-slate-50;
+  }
+  .dark .glass-card-hover:hover {
+    @apply bg-white/[0.08];
+  }
+  .hover-lift {
+    @apply transition-transform duration-300 will-change-transform;
+  }
+  .hover-lift:hover {
+    transform: translateY(-6px);
+  }
+
+  /* Buttons */
+  .btn-base {
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent;
+  }
+  .btn-primary {
+    @apply btn-base bg-amber-300 text-black shadow-lg shadow-amber-500/20 hover:brightness-110 active:scale-95 focus:ring-amber-300/60;
+  }
+  /* Buttons adapt for light and dark */
+  .btn-outline {
+    @apply btn-base border text-amber-700 border-amber-600 hover:bg-amber-50 focus:ring-amber-600/30;
+  }
+  .dark .btn-outline {
+    @apply border-amber-200 text-amber-200 hover:bg-amber-200/10 focus:ring-amber-200/40;
+  }
+  .btn-ghost {
+    @apply btn-base border text-cyan-700 border-cyan-600 hover:bg-cyan-50 focus:ring-cyan-600/30;
+  }
+  .dark .btn-ghost {
+    @apply border-cyan-400/40 text-cyan-300 hover:bg-cyan-400/10 focus:ring-cyan-400/40;
+  }
+
+  /* Badges / Chips */
+  .badge {
+    @apply px-3 py-1 rounded-md text-sm border;
+  }
+  .badge {
+    @apply bg-slate-100 border-slate-200 text-slate-800;
+  }
+  .dark .badge {
+    @apply bg-white/5 border-white/10 text-gray-200;
+  }
+}
+
+@layer utilities {
+  /* Simple page fade */
+  .page-enter-active,
+  .page-leave-active {
+    transition: opacity 200ms ease;
+  }
+  .page-enter-from,
+  .page-leave-to {
+    opacity: 0;
+  }
+
+  /* Light-mode overrides for classes commonly authored for dark */
+  html:not(.dark) .text-gray-400 {
+    @apply text-slate-700;
+  }
+  html:not(.dark) .text-gray-300 {
+    @apply text-slate-800;
+  }
+  html:not(.dark) .text-gray-200 {
+    @apply text-slate-900;
+  }
+  html:not(.dark) .border-white\/10 {
+    @apply border-black/10;
+  }
+  html:not(.dark) .bg-white\/5 {
+    @apply bg-black/5;
+  }
+  html:not(.dark) .bg-white\/\[0\.04\] {
+    @apply bg-black/[0.04];
+  }
+
+  /* Float animations */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-float-delay {
+    animation: float 7s ease-in-out infinite;
+    animation-delay: 600ms;
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  /* Soft ring pulsing */
+  .animate-ring-soft {
+    animation: ringSoft 3s ease-in-out infinite;
+  }
+  @keyframes ringSoft {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.08);
+    }
+    50% {
+      box-shadow: 0 0 0 6px rgba(251, 191, 36, 0.06);
+    }
+  }
+
+  /* Reveal utilities */
+  .reveal {
+    opacity: 0;
+    animation: revealFade 600ms ease forwards;
+  }
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: revealUp 600ms ease forwards;
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-12px);
+    animation: revealLeft 600ms ease forwards;
+  }
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.96);
+    animation: revealScale 500ms ease forwards;
+  }
+  .in-view {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  @keyframes revealFade {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes revealUp {
+    0% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes revealLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes revealScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}

@@ -1,44 +1,44 @@
 <template>
-  <main class="relative mt-10 md:mt-8 lg:mt-10">
+  <main class="relative">
     <!-- Hero Section -->
-    <section class="relative container mx-auto px-6 sm:px-8 lg:px-12 py-8 md:py-12 min-h-[70vh] flex items-center">
+    <section class="relative section-container pt-6 md:pt-10 lg:pt-12 pb-16 md:pb-20 lg:pb-24 min-h-[70vh] flex items-center">
       <!-- Background decorations -->
       <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
         <div class="absolute -top-10 -left-10 w-56 h-56 bg-amber-300/10 rounded-full blur-3xl"></div>
         <div class="absolute -bottom-10 -right-10 w-72 h-72 bg-cyan-400/10 rounded-full blur-3xl"></div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center w-full">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
         <!-- Left: Text -->
         <div class="text-center md:text-left order-2 md:order-1">
-          <p class="text-amber-200 tracking-wide fade-in-from-left">Hello World, I'm</p>
-          <h1 class="mt-2 text-4xl md:text-5xl lg:text-6xl font-extrabold text-white retro-font fadein-up">Febrian Sitorus</h1>
+          <p class="text-amber-700 dark:text-amber-200 tracking-wide fade-in-from-left">Hello World, I'm</p>
+          <h1 class="mt-2 text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white retro-font fadein-up">Febrian Sitorus</h1>
           <div class="py-3">
-            <h2 class="typewrite text-lg md:text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-slate-100 to-yellow-500 fadein-up" ref="typewriter">
+            <h2 class="typewrite text-lg md:text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-amber-500 dark:from-slate-100 dark:to-yellow-500 fadein-up" ref="typewriter">
               <span class="wrap">{{ txt }}</span>
             </h2>
           </div>
-          <p class="text-gray-300 max-w-xl mx-auto md:mx-0 fade-in-from-left">I craft modern, fast and accessible web experiences with a touch of creativity and clean design.
+          <p class="text-slate-700 dark:text-gray-300 max-w-xl mx-auto md:mx-0 fade-in-from-left">I craft modern, fast and accessible web experiences with a touch of creativity and clean design.
             <span class="wave">👋🏼</span>
           </p>
 
           <!-- CTAs -->
           <div class="mt-6 flex flex-wrap gap-3 justify-center md:justify-start fadein-bot fade-500">
-            <a href="/resume.pdf" target="_blank" rel="noopener" class="inline-flex items-center px-5 py-2.5 rounded-lg border border-amber-200 text-amber-200 hover:bg-amber-200/10 transition">
+            <a href="/resume.pdf" target="_blank" rel="noopener" class="btn-outline">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mr-2 w-4 h-4"><path fill-rule="evenodd" d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zm5.845 17.03a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V12a.75.75 0 00-1.5 0v4.19l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3z" clip-rule="evenodd"></path><path d="M14.25 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0016.5 7.5h-1.875a.375.375 0 01-.375-.375V5.25z"></path></svg>
               Download Resume
             </a>
-            <router-link to="/portfolio" class="inline-flex items-center px-5 py-2.5 rounded-lg bg-amber-300 text-black font-semibold shadow-lg shadow-amber-500/20 hover:brightness-110 active:scale-95 transition">
+            <router-link to="/portfolio" class="btn-primary font-semibold">
               View Portfolio
             </router-link>
-            <router-link to="/about" class="inline-flex items-center px-5 py-2.5 rounded-lg border border-cyan-400/40 text-cyan-300 hover:bg-cyan-400/10 transition">
+            <router-link to="/about" class="btn-ghost">
               Contact
             </router-link>
           </div>
         </div>
 
         <!-- Right: Avatar -->
-        <div class="flex justify-center md:justify-end order-1 md:order-2 fadein-right">
+        <div class="flex justify-center md:justify-end order-1 md:order-2 items-center fadein-right">
           <img
             alt="Portrait of Febrian Sitorus"
             loading="lazy"
@@ -53,62 +53,61 @@
     </section>
 
     <!-- Tech Stack Section -->
-    <section class="container mx-auto px-6 sm:px-8 lg:px-12 py-10">
-      <h3 class="text-center text-sm tracking-widest text-gray-400">TECH STACK</h3>
-      <div class="mt-4 flex flex-wrap items-center justify-center gap-3">
-        <span class="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200 text-sm">Vue 3</span>
-        <span class="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200 text-sm">Vue Router</span>
-        <span class="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200 text-sm">Tailwind CSS</span>
-        <span class="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200 text-sm">JavaScript (ESNext)</span>
-        <span class="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200 text-sm">Node.js</span>
-        <span class="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-gray-200 text-sm">Axios</span>
+    <section class="section-container py-16">
+      <SectionHeader title="Tech Stack" subtitle="Tools I use to build" />
+      <div class="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+        <span class="badge">Vue 3</span>
+        <span class="badge">Vue Router</span>
+        <span class="badge">Tailwind CSS</span>
+        <span class="badge">JavaScript (ESNext)</span>
+        <span class="badge">Node.js</span>
+        <span class="badge">Axios</span>
       </div>
     </section>
 
     <!-- Services / Offerings -->
-    <section class="container mx-auto px-6 sm:px-8 lg:px-12 pb-10">
-      <h3 class="text-lg md:text-xl font-semibold text-white text-center">Services</h3>
-      <p class="text-gray-400 text-center text-sm md:text-base mt-1">What I can help you build</p>
-      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <section class="section-container py-16">
+      <SectionHeader title="Services" subtitle="What I can help you build" />
+      <div class="mt-8 section-grid">
         <!-- Service Card -->
-        <div class="group rounded-xl border border-white/10 bg-white/5 hover:bg-white/[.07] transition p-5">
+        <div class="group glass-card glass-card-hover p-6 hover-lift">
           <div class="w-10 h-10 rounded-lg bg-amber-300/20 text-amber-200 flex items-center justify-center"> 
             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zm0 2.236L6 8v8l6 3.236L18 16V8l-6-2.764z"/></svg>
           </div>
-          <h4 class="mt-3 text-white font-semibold">Frontend Development</h4>
-          <p class="text-gray-400 text-sm mt-1">Modern, responsive UI with Vue 3 + Tailwind, optimized for performance and accessibility.</p>
+          <h4 class="mt-3 text-slate-900 dark:text-white font-semibold">Frontend Development</h4>
+          <p class="text-slate-700 dark:text-gray-400 text-sm mt-1">Modern, responsive UI with Vue 3 + Tailwind, optimized for performance and accessibility.</p>
         </div>
-        <div class="group rounded-xl border border-white/10 bg-white/5 hover:bg-white/[.07] transition p-5">
+        <div class="group glass-card glass-card-hover p-6 hover-lift">
           <div class="w-10 h-10 rounded-lg bg-cyan-300/20 text-cyan-200 flex items-center justify-center"> 
             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h10v2H4v-2z"/></svg>
           </div>
-          <h4 class="mt-3 text-white font-semibold">Full-stack Web</h4>
-          <p class="text-gray-400 text-sm mt-1">From API integration to deployment, clean and maintainable structure ready for scale.</p>
+          <h4 class="mt-3 text-slate-900 dark:text-white font-semibold">Full-stack Web</h4>
+          <p class="text-slate-700 dark:text-gray-400 text-sm mt-1">From API integration to deployment, clean and maintainable structure ready for scale.</p>
         </div>
-        <div class="group rounded-xl border border-white/10 bg-white/5 hover:bg-white/[.07] transition p-5">
+        <div class="group glass-card glass-card-hover p-6 hover-lift">
           <div class="w-10 h-10 rounded-lg bg-emerald-300/20 text-emerald-200 flex items-center justify-center"> 
             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 7a5 5 0 015 5h3l-4 4-4-4h3a3 3 0 10-3-3V7z"/></svg>
           </div>
-          <h4 class="mt-3 text-white font-semibold">Performance & SEO</h4>
-          <p class="text-gray-400 text-sm mt-1">Audit and optimize Core Web Vitals, Lighthouse, and best practices.</p>
+          <h4 class="mt-3 text-slate-900 dark:text-white font-semibold">Performance & SEO</h4>
+          <p class="text-slate-700 dark:text-gray-400 text-sm mt-1">Audit and optimize Core Web Vitals, Lighthouse, and best practices.</p>
         </div>
-        <div class="group rounded-xl border border-white/10 bg-white/5 hover:bg-white/[.07] transition p-5">
+        <div class="group glass-card glass-card-hover p-6 hover-lift">
           <div class="w-10 h-10 rounded-lg bg-fuchsia-300/20 text-fuchsia-200 flex items-center justify-center"> 
             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h16v4H4V4zm0 6h10v4H4v-4zm0 6h16v4H4v-4z"/></svg>
           </div>
-          <h4 class="mt-3 text-white font-semibold">UI/UX Design</h4>
-          <p class="text-gray-400 text-sm mt-1">Design systems, wireframe to hi-fi prototypes with accessible components.</p>
+          <h4 class="mt-3 text-slate-900 dark:text-white font-semibold">UI/UX Design</h4>
+          <p class="text-slate-700 dark:text-gray-400 text-sm mt-1">Design systems, wireframe to hi-fi prototypes with accessible components.</p>
         </div>
       </div>
     </section>
 
     <!-- Featured Metrics (Animated Counters) -->
-    <section class="container mx-auto px-6 sm:px-8 lg:px-12 pb-16" ref="metricsSection">
-      <h3 class="text-lg md:text-xl font-semibold text-white text-center">Featured Metrics</h3>
-      <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-5 max-w-4xl mx-auto">
-        <div v-for="m in metrics" :key="m.label" class="rounded-xl border border-white/10 bg-white/5 p-6 text-center">
+    <section class="section-container py-16" ref="metricsSection">
+      <SectionHeader title="Featured Metrics" />
+      <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+        <div v-for="m in metrics" :key="m.label" class="glass-card p-6 text-center">
           <div class="text-3xl md:text-4xl font-extrabold text-amber-300">{{ m.current }}</div>
-          <div class="text-gray-300 text-xs md:text-sm mt-1">{{ m.label }}</div>
+          <div class="text-slate-700 dark:text-gray-300 text-xs md:text-sm mt-1">{{ m.label }}</div>
         </div>
       </div>
     </section>
@@ -116,8 +115,10 @@
 </template>
 
 <script>
+import SectionHeader from '@/components/SectionHeader.vue'
 export default {
   name: 'HomeView',
+  components: { SectionHeader },
   data() {
     return {
       toRotate: ["Frontend Developer", "Full-stack Developer", "Informatics Student", "UI UX Design"],
@@ -125,11 +126,30 @@ export default {
       txt: '',
       loopNum: 0,
       isDeleting: false,
+      metrics: [
+        { label: 'Projects', current: 0, target: 12 },
+        { label: 'Happy Clients', current: 0, target: 8 },
+        { label: 'Cups of Coffee', current: 0, target: 321 },
+        { label: 'Commits', current: 0, target: 1500 }
+      ],
     };
   },
   mounted() {
     this.$nextTick(() => {
       this.tick();
+      // Animate metrics when section is visible
+      const section = this.$refs.metricsSection;
+      if (section) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              this.animateCounters();
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.3 });
+        io.observe(section);
+      }
     });
   },
   methods: {
@@ -166,6 +186,25 @@ export default {
         that.tick();
       }, delta);
     },
+    animateCounters() {
+      const duration = 1300;
+      const start = performance.now();
+      const startValues = this.metrics.map(m => m.current);
+      const deltas = this.metrics.map(m => m.target - m.current);
+      const step = (now) => {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = this.easeOutCubic(t);
+        this.metrics = this.metrics.map((m, i) => ({
+          ...m,
+          current: Math.round(startValues[i] + deltas[i] * eased)
+        }));
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    },
+    easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
   }
 }
 </script>

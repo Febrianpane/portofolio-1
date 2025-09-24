@@ -1,363 +1,113 @@
 <script>
+import SectionHeader from '@/components/SectionHeader.vue'
 export default {
+  components: { SectionHeader },
   data() {
     return {
-      activeTab: 1,
-      tech: [
-        {
-          id: 1,
-          name: "HTML",
-          imageUrl: "https://cdn-icons-png.flaticon.com/512/1051/1051277.png",
-          status: "Advanced",
-        },
-        {
-          id: 2,
-          name: "CSS",
-          imageUrl: "https://cdn-icons-png.flaticon.com/512/732/732190.png",
-          status: "Advanced",
-        },
-        {
-          id: 3,
-          name: "PHP",
-          imageUrl:
-            "https://cdn.iconscout.com/icon/free/png-256/free-php-2038871-1720084.png",
-          status: "Advanced",
-        },
-        {
-          id: 4,
-          name: "Javascript",
-          imageUrl:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/JavaScript-logo.png/600px-JavaScript-logo.png",
-          status: "Advance",
-        },
-        {
-          id: 5,
-          name: "Codeigniter",
-          imageUrl:
-            "https://cdn.iconscout.com/icon/free/png-256/free-codeigniter-logo-icon-download-in-svg-png-gif-file-formats--wordmark-programming-langugae-language-pack-logos-icons-1175201.png?f=webp&w=256",
-          status: "Intermediate",
-        },
-        {
-          id: 6,
-          name: "VueJS",
-          imageUrl:
-            "https://cdn.iconscout.com/icon/free/png-256/free-vue-282497.png?f=webp",
-          status: "Intermediate",
-        },
-        {
-          id: 7,
-          name: "NodeJS",
-          imageUrl:
-            "https://cdn.iconscout.com/icon/free/png-256/free-node-js-1174925.png",
-          status: "Beginner",
-        },
-        {
-          id: 8,
-          name: "Tailwind",
-          imageUrl:
-            "https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg",
-          status: "Advance",
-        },
-        {
-          id: 9,
-          name: "Bootstrap",
-          imageUrl:
-            "https://getbootstrap.com/docs/5.2/assets/brand/bootstrap-logo-shadow.png",
-          status: "Intermediate",
-        },
-        {
-          id: 10,
-          name: "ReactJS",
-          imageUrl:
-            "https://cdn4.iconfinder.com/data/icons/logos-3/600/React.js_logo-512.png",
-          status: "Beginner",
-        },
-      ],
-      tools: [
-        {
-          id: 1,
-          name: "Git",
-          imageUrl:
-            "https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png",
-          status: "Version Control",
-        },
-        {
-          id: 2,
-          name: "GitHub",
-          imageUrl: "https://cdn-icons-png.flaticon.com/512/25/25231.png",
-          status: "Git Hosting",
-        },
-        {
-          id: 3,
-          name: "NPM",
-          imageUrl:
-            "https://cdn.iconscout.com/icon/free/png-256/free-npm-3-1175132.png",
-          status: "Package Manager",
-        },
-        {
-          id: 4,
-          name: "MySQL",
-          imageUrl: "https://cdn-icons-png.flaticon.com/512/5968/5968313.png",
-          status: "Database",
-        },
-      ],
-      sertifikat: [
-        {
-          id: 1,
-          name: "Alibaba Cloud",
-          imageUrl:
-            "https://assets.wheelhouse.com/media/_solution_logo_09222023_8164684.png",
-          status: "MySql Beginner",
-          link: "https://aliyun-aps-cloud-public.oss-cn-hangzhou.aliyuncs.com/img_c5ba2c65ffdfe7e94315d345adc9374a.jpg",
-        },
-        {
-          id: 2,
-          name: "COMING SOON AE TERUS",
-          imageUrl:
-            "https://avatars.githubusercontent.com/u/12964819?s=200&v=4",
-          status: "Front-End Path",
-          link: "https://progate.com/path_certificates/YOURLINK",
-        },
-        {
-          id: 3,
-          name: "COMING SOON",
-          imageUrl:
-            "https://design-style-guide.freecodecamp.org/downloads/fcc_primary_small.jpg",
-          status: "JavaScript Algorithms",
-          link: "https://www.freecodecamp.org/certification/YOURNAME/javascript-algorithms-and-data-structures",
-        },
-      ],
+      // About page has no modal or skills now
     };
   },
+  mounted() {
+    // IntersectionObserver to trigger reveal animations when in view
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    // In Vue 3 with fragment root, this.$el can be a comment node.
+    // Query globally instead of relying on this.$el
+    const els = document.querySelectorAll('.reveal, .reveal-up, .reveal-left, .reveal-scale');
+    els.forEach((el) => io.observe(el));
+
+  },
+  methods: {}
 };
 </script>
 <template>
   <div
-    class="bg-[#1e1e1f] px-5 py-5 md:px-12 md:py-10 text-left border border-[#383838] rounded-3xl text-amber-50 mx-3 mb-5"
-  >
+    class="relative overflow-hidden backdrop-blur-sm px-4 sm:px-8 lg:px-10 py-6 md:py-12 text-left border rounded-3xl mx-3 mb-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.12)] bg-white/70 dark:bg-[#1e1e1f]/60 border-black/10 dark:border-white/10">
+    <!-- decorative animated glow -->
+    <div aria-hidden="true" class="pointer-events-none absolute -top-20 -left-24 w-56 h-56 rounded-full bg-amber-300/10 blur-3xl animate-float"></div>
+    <div aria-hidden="true" class="pointer-events-none absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-cyan-300/10 blur-3xl animate-float-delay"></div>
     <article data-page="about">
       <header>
-        <div
-          class="text-2xl font-bold text-white mb-5 fadein-bot title-section flex items-center"
-        >
-          About Me &nbsp;
-          <div
-            class="h-[1px] w-32 bg-amber-200 md:w-96 aos-init aos-animate"
-            data-aos="zoom-in-left"
-            data-aos-duration="600"
-          ></div>
-        </div>
+        <SectionHeader title="About Me" subtitle="A brief introduction and what I love to do." align="left" />
       </header>
-
+      
       <section
-        class="text-sm md:text-lg text-justify flex flex-col gap-4 md:flex-row md:gap-8 md:justify-left md:items-center"
+        class="text-sm md:text-base flex flex-col gap-5 md:flex-row md:gap-10 md:items-center"
       >
-        <div class="flex justify-center">
+        <div class="flex justify-center md:justify-start md:w-5/12 reveal reveal-scale">
           <img
-            class="w-9/12 rounded-full mb-3 fadein-up"
+            class="w-40 h-40 md:w-56 md:h-56 rounded-2xl object-cover border border-white/10 shadow-xl ring-4 ring-amber-300/10 transition-transform duration-300 hover:scale-[1.03] animate-ring-soft"
             src="https://media.licdn.com/dms/image/v2/D4E03AQFT-AmAqVtJ5A/profile-displayphoto-shrink_200_200/B4EZQL6XyoHsAY-/0/1735366641355?e=2147483647&v=beta&t=lsNyzyIcJBr730S7sgQ40PRCxw-Qu236eqRQrMriz9U"
             alt="Foto"
           />
         </div>
         <div class="md:w-7/12">
-          <p class="mb-3 md:mb-7 fadein-left fadeins-1">
-            &nbsp; &nbsp; &nbsp; Hi everyone! My name is Febrian Pane. I'm a web
-            developer . I really enjoy what I do right now, in my opinion,
-            creating programs is not just a job, but also an art that has
-            aesthetic value
+          <p class="mb-4 md:mb-6 leading-relaxed text-gray-300 reveal reveal-up">
+            Hi everyone! My name is <span class="text-amber-200 font-semibold">Febrian Pane</span>. I'm a web developer who enjoys crafting delightful user experiences. For me, building software is not only a profession but also an art with aesthetic values.
           </p>
-          <p class="mb-3 fadein-left fadeins-2">
-            &nbsp; &nbsp; &nbsp; My job is to build your website to be
-            functional and user-friendly yet still attractive. In addition, I
-            provide a personal touch to your product and ensure that the website
-            catches attention and is easy to use. My goal is to convey your
-            message and identity in the most creative way. If you are interested
-            in hiring me, please contact the listed contact.
+          <p class="leading-relaxed text-gray-300 reveal reveal-up" style="animation-delay: 120ms">
+            My job is to build modern, functional, and user-friendly websites with a personal touch. I aim to convey your message and identity in the most creative way possible. If you're interested in working together, feel free to reach out!
           </p>
         </div>
       </section>
     </article>
   </div>
 
-  <div class="px-5 py-5 md:px-12 md:py-10 text-left text-amber-50 mx-3">
-    <article data-page="about">
-      <header>
-        <div
-          class="text-2xl font-bold text-white mb-5 fadein-bot title-section flex items-center"
-        >
-          <div
-            class="h-[1px] w-10 bg-amber-200 md:w-20 aos-init aos-animate"
-            data-aos="zoom-in-left"
-            data-aos-duration="600"
-          ></div>
-          &nbsp; Skills
+  
+
+  <!-- Quick Facts section -->
+  <div class="px-4 sm:px-8 lg:px-10 mt-6 md:mt-10">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+      <div class="glass-card glass-card-hover p-4 flex items-center gap-3 reveal reveal-scale" style="animation-delay: 40ms">
+        <div class="w-10 h-10 rounded-lg bg-amber-300/15 text-amber-200 flex items-center justify-center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l4 8 8 1-6 6 1 9-7-4-7 4 1-9-6-6 8-1 4-8z"/></svg>
         </div>
-      </header>
-      <section>
         <div>
-          <ul
-            class="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400 mb-5"
-          >
-            <li class="mr-2">
-              <button
-                class="inline-block px-4 py-3 rounded-lg hover:text-white"
-                :class="{
-                  'text-amber-200 bg-amber-200 bg-opacity-10': activeTab === 1,
-                }"
-                @click="activeTab = 1"
-              >
-                Tech Stack
-              </button>
-            </li>
-            <li class="mr-2">
-              <button
-                class="inline-block px-4 py-3 rounded-lg hover:text-white"
-                :class="{
-                  'text-amber-200 bg-amber-200 bg-opacity-10': activeTab === 2,
-                }"
-                @click="activeTab = 2"
-              >
-                Tools
-              </button>
-            </li>
-            <li class="mr-2">
-              <button
-                class="inline-block px-4 py-3 rounded-lg hover:text-white"
-                :class="{
-                  'text-amber-200 bg-amber-200 bg-opacity-10': activeTab === 3,
-                }"
-                @click="activeTab = 3"
-              >
-                Serifikat
-              </button>
-            </li>
-          </ul>
+          <div class="font-semibold text-slate-900 dark:text-white">3+ Years</div>
+          <div class="text-xs text-slate-700 dark:text-gray-400">Building Interfaces</div>
         </div>
-        <div v-show="activeTab === 1">
-          <div
-            class="grid grid-cols-2 gap-4 pb-32 md:grid-cols-3 md:gap-8 xl:grid-cols-4 xl:gap-10 2xl:gap-12"
-          >
-            <div v-for="item in tech" :key="item.id">
-              <div
-                class="item-tech flex cursor-pointer items-center gap-2 rounded border border-amber-200 px-2 py-2 hover:bg-amber-200 hover:bg-opacity-10 md:gap-3 lg:px-3"
-              >
-                <div
-                  class="flex h-12 w-12 items-center justify-center p-0 lg:h-16 lg:w-16 lg:p-2 zoom-in"
-                >
-                  <img
-                    alt="HTML"
-                    loading="lazy"
-                    width="32"
-                    height="32"
-                    decoding="async"
-                    data-nimg="1"
-                    class="img-tech drop-shadow-xl transition-all duration-300 h-[65%] w-[65%] lg:h-[85%] lg:w-[85%]"
-                    :src="item.imageUrl"
-                    style="color: transparent"
-                  />
-                </div>
-                <div class="flex items-center text-sm md:text-base lg:text-lg">
-                  <div
-                    class="tech font-medium text-secondary transition-all duration-300 translate-y-0"
-                  >
-                    {{ item.name }}
-                  </div>
-                  <div
-                    class="status-tech opacity-0 absolute mt-5 text-[10px] text-amber-200 transition-all duration-300 md:text-xs lg:text-sm"
-                  >
-                    {{ item.status }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      </div>
+      <div class="glass-card glass-card-hover p-4 flex items-center gap-3 reveal reveal-scale" style="animation-delay: 120ms">
+        <div class="w-10 h-10 rounded-lg bg-cyan-300/15 text-cyan-200 flex items-center justify-center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
         </div>
-        <div v-show="activeTab === 2">
-          <div
-            class="grid grid-cols-2 gap-4 pb-32 md:grid-cols-3 md:gap-8 xl:grid-cols-4 xl:gap-10 2xl:gap-12"
-          >
-            <div v-for="item in tools" :key="item.id">
-              <div
-                class="item-tech flex cursor-pointer items-center gap-2 rounded border border-amber-200 px-2 py-2 hover:bg-amber-200 hover:bg-opacity-10 md:gap-3 lg:px-3"
-              >
-                <div
-                  class="flex h-12 w-12 items-center justify-center p-0 lg:h-16 lg:w-16 lg:p-2 zoom-in"
-                >
-                  <img
-                    alt="HTML"
-                    loading="lazy"
-                    width="32"
-                    height="32"
-                    decoding="async"
-                    data-nimg="1"
-                    class="img-tech drop-shadow-xl transition-all duration-300 h-[65%] w-[65%] lg:h-[85%] lg:w-[85%]"
-                    :src="item.imageUrl"
-                    style="color: transparent"
-                  />
-                </div>
-                <div class="flex items-center text-sm md:text-base lg:text-lg">
-                  <div
-                    class="tech font-medium text-secondary transition-all duration-300 translate-y-0"
-                  >
-                    {{ item.name }}
-                  </div>
-                  <div
-                    class="status-tech opacity-0 absolute mt-5 text-[10px] text-amber-200 transition-all duration-300 md:text-xs lg:text-sm"
-                  >
-                    {{ item.status }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div>
+          <div class="font-semibold text-slate-900 dark:text-white">Stack</div>
+          <div class="text-xs text-slate-700 dark:text-gray-400">Vue, Tailwind, Node</div>
         </div>
-        <div v-show="activeTab === 3">
-          <div
-            class="grid grid-cols-2 gap-4 pb-32 md:grid-cols-3 md:gap-8 xl:grid-cols-4 xl:gap-10 2xl:gap-12"
-          >
-            <div v-for="item in sertifikat" :key="item.id">
-              <a :href="item.link" target="_blank" rel="noopener noreferrer">
-                <div
-                  class="item-tech flex cursor-pointer items-center gap-2 rounded border border-amber-200 px-2 py-2 hover:bg-amber-200 hover:bg-opacity-10 md:gap-3 lg:px-3"
-                >
-                  <div
-                    class="flex h-12 w-12 items-center justify-center p-0 lg:h-16 lg:w-16 lg:p-2 zoom-in"
-                  >
-                    <img
-                      alt="HTML"
-                      loading="lazy"
-                      width="32"
-                      height="32"
-                      decoding="async"
-                      data-nimg="1"
-                      class="img-tech drop-shadow-xl transition-all duration-300 h-[65%] w-[65%] lg:h-[85%] lg:w-[85%]"
-                      :src="item.imageUrl"
-                      style="color: transparent"
-                    />
-                  </div>
-                  <div
-                    class="flex items-center text-sm md:text-base lg:text-lg"
-                  >
-                    <div
-                      class="tech font-medium text-secondary transition-all duration-300 translate-y-0"
-                    >
-                      {{ item.name }}
-                    </div>
-                    <div
-                      class="status-tech opacity-0 absolute mt-5 text-[10px] text-amber-200 transition-all duration-300 md:text-xs lg:text-sm"
-                    >
-                      {{ item.status }}
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
+      </div>
+      <div class="glass-card glass-card-hover p-4 flex items-center gap-3 reveal reveal-scale" style="animation-delay: 200ms">
+        <div class="w-10 h-10 rounded-lg bg-emerald-300/15 text-emerald-200 flex items-center justify-center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 3.99 4 6.5 4c1.74 0 3.41.81 4.5 2.09C12.09 4.81 13.76 4 15.5 4 18.01 4 20 6 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
         </div>
-      </section>
-    </article>
+        <div>
+          <div class="font-semibold text-slate-900 dark:text-white">Passion</div>
+          <div class="text-xs text-slate-700 dark:text-gray-400">UX & Performance</div>
+        </div>
+      </div>
+      <div class="glass-card glass-card-hover p-4 flex items-center gap-3 reveal reveal-scale" style="animation-delay: 280ms">
+        <div class="w-10 h-10 rounded-lg bg-fuchsia-300/15 text-fuchsia-200 flex items-center justify-center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11 17h2v2h-2zm0-14h2v12h-2z"/></svg>
+        </div>
+        <div>
+          <div class="font-semibold text-slate-900 dark:text-white">Open to Work</div>
+          <div class="text-xs text-slate-700 dark:text-gray-400">Freelance & Remote</div>
+        </div>
+      </div>
+    </div>
   </div>
-</template>
+
+  
+  
+  
+  </template>
 
 <style>
 .fadein-left {
@@ -385,20 +135,17 @@ export default {
   animation-delay: 800ms;
 }
 
-.img-tech,
-.tech {
-  transition: transform 0.3s ease;
+/* Reveal on mount with slight stagger */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 600ms ease forwards;
 }
 
-.item-tech:hover .img-tech {
-  transform: scale(1.3);
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
-.item-tech:hover .tech {
-  transform: translateY(-12px);
-}
-
-.item-tech:hover .status-tech {
-  opacity: 1;
-}
+/* cleaned unused skills/certificates and modal styles */
 </style>

@@ -26,12 +26,7 @@ const routes = [
     component: () => import('../views/BlogView.vue'),
     meta: { title: 'Games' }
   },
-  {
-    path: '/read/:slug/:id',
-    name: 'articleDetail',
-    component: () => import('../views/ArticleView.vue'),
-    meta: { title: 'Blog' }
-  }
+  
   
 ]
 

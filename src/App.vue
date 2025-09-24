@@ -3,14 +3,30 @@
   <!-- This is an example component -->
   <div class="max-w-7xl mx-auto flex flex-col relative">
 
-    <nav class="max-w-7xl px-5 fixed top-0 z-[98] w-screen border-b border-[#2a2a2a] backdrop-blur-md bg-[#121212] bg-opacity-80 relative">
-      <div class="container mx-auto flex flex-wrap items-center justify-between py-2 md:py-3">
-        <button @click="redirectToHome" class="flex">
-          <span class="self-center text-base md:text-lg text-[#ffdb70] font-semibold whitespace-nowrap fadein-bot hover:text-amber-100 blackletter-font">Febrian Sitorus</span>
+    <nav class="fixed inset-x-0 top-0 z-[98] w-full border-b border-black/10 dark:border-[#2a2a2a] backdrop-blur-md bg-white/80 dark:bg-[#121212]/80">
+      <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between px-5 py-2 md:py-3">
+        <button @click="redirectToHome" class="flex items-center" aria-label="Go to Home">
+          <LiquidText class="fadein-bot hover:brightness-110"
+            text="Febrian Sitorus"
+            :width="230"
+            :height="34"
+            :fontSize="22"
+            fontFamily="EB Garamond, serif"
+            fontWeight="600"
+          />
         </button>
 
         <!-- Right side: socials on md+, hamburger on mobile -->
-        <div class="flex items-center md:order-2">
+        <div class="flex items-center gap-2 md:order-2">
+          <!-- Theme toggle -->
+          <button @click="toggleTheme" class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-300 hover:text-white hover:bg-[#1e1e1e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ffdb70] focus:ring-offset-transparent" aria-label="Toggle theme">
+            <svg v-if="theme==='dark'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 0 1-10.45-10.5 1 1 0 0 0-.11-1A1 1 0 0 0 8 1a10 10 0 1 0 11.31 11.31 1 1 0 0 0 .33-.76Z"/>
+            </svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 4a1 1 0 0 0 1-1V1h-2v2a1 1 0 0 0 1 1zm0 16a1 1 0 0 0-1 1v2h2v-2a1 1 0 0 0-1-1zM4 13a1 1 0 0 0-1-1H1v2h2a1 1 0 0 0 1-1zm19 0a1 1 0 0 0-1-1h-2v2h2a1 1 0 0 0 1-1zM6.76 19.16l-1.42 1.42-1.79-1.8 1.41-1.41 1.8 1.79zm13.21-.38l-1.79 1.8-1.42-1.42 1.8-1.79 1.41 1.41zM12 6a6 6 0 1 0 6 6 6.01 6.01 0 0 0-6-6z"/>
+            </svg>
+          </button>
           <!-- Hamburger for mobile -->
           <button @click="mobileOpen = !mobileOpen" class="md:hidden inline-flex items-center justify-center rounded-md p-1.5 text-gray-300 hover:text-white hover:bg-[#1e1e1e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ffdb70] focus:ring-offset-transparent" :aria-expanded="mobileOpen.toString()" aria-label="Toggle navigation">
             <svg v-if="!mobileOpen" class="h-5 w-5 md:h-6 md:w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -27,20 +43,20 @@
           <ul class="flex-col md:flex-row flex md:space-x-8 mt-4 md:mt-0 md:text-sm md:font-medium">
             <li>
               <router-link to="/"
-                class="fadein-bot text-gray-300 hover:text-white md:border-0 block pl-3 pr-4 py-2 md:p-0"
+                class="fadein-bot text-slate-700 hover:text-black dark:text-gray-300 dark:hover:text-white md:border-0 block pl-3 pr-4 py-2 md:p-0"
                 aria-current="page">Home</router-link>
             </li>
             <li>
               <router-link to="/about"
-                class="fadein-bot fadein-1 text-gray-300 hover:text-white md:border-0 block pl-3 pr-4 py-2 md:p-0">About</router-link>
+                class="fadein-bot fadein-1 text-slate-700 hover:text-black dark:text-gray-300 dark:hover:text-white md:border-0 block pl-3 pr-4 py-2 md:p-0">About</router-link>
             </li>
             <li>
               <router-link to="/portfolio"
-                class="fadein-bot fadein-2 text-gray-300 hover:text-white md:border-0 block pl-3 pr-4 py-2 md:p-0">Portofolio</router-link>
+                class="fadein-bot fadein-2 text-slate-700 hover:text-black dark:text-gray-300 dark:hover:text-white md:border-0 block pl-3 pr-4 py-2 md:p-0">Portofolio</router-link>
             </li>
             <li>
               <router-link to="/blog"
-                class="fadein-bot fadein-3 text-gray-300 hover:text-white md:border-0 block pl-3 pr-4 py-2 md:p-0 blog">Games</router-link>
+                class="fadein-bot fadein-3 text-slate-700 hover:text-black dark:text-gray-300 dark:hover:text-white md:border-0 block pl-3 pr-4 py-2 md:p-0 blog">Games</router-link>
             </li>
           </ul>
         </div>
@@ -48,25 +64,25 @@
 
       <!-- Mobile dropdown menu -->
       <transition name="fade" mode="out-in">
-        <div v-if="mobileOpen" class="md:hidden border-t border-[#2a2a2a]">
+        <div v-if="mobileOpen" class="md:hidden border-t border-black/10 dark:border-[#2a2a2a]">
           <ul class="px-4 py-2 space-y-1">
             <li>
-              <router-link to="/" class="flex items-center justify-between rounded-lg px-3 py-2 text-gray-200 hover:text-white hover:bg-[#1e1e1e]">
+              <router-link to="/" class="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-[#1e1e1e]">
                 <span>Home</span>
               </router-link>
             </li>
             <li>
-              <router-link to="/about" class="flex items-center justify-between rounded-lg px-3 py-2 text-gray-200 hover:text-white hover:bg-[#1e1e1e]">
+              <router-link to="/about" class="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-[#1e1e1e]">
                 <span>About</span>
               </router-link>
             </li>
             <li>
-              <router-link to="/portfolio" class="flex items-center justify-between rounded-lg px-3 py-2 text-gray-200 hover:text-white hover:bg-[#1e1e1e]">
+              <router-link to="/portfolio" class="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-[#1e1e1e]">
                 <span>Portofolio</span>
               </router-link>
             </li>
             <li>
-              <router-link to="/blog" class="flex items-center justify-between rounded-lg px-3 py-2 text-gray-200 hover:text-white hover:bg-[#1e1e1e]">
+              <router-link to="/blog" class="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-[#1e1e1e]">
                 <span>Games</span>
               </router-link>
             </li>
@@ -75,8 +91,10 @@
       </transition>
     </nav>
 
-    <div class="mt-[52px] md:mt-[88px]">
-      <router-view />
+    <div class="mt-[70px] md:mt-[80px]">
+      <transition name="page" mode="out-in">
+        <router-view />
+      </transition>
     </div>
 
     <!-- Floating Social Buttons -->
@@ -125,18 +143,27 @@
   
   <!-- Opening animation overlay -->
   <RobotIntro v-if="showIntro" @finished="onIntroFinished" />
+  <!-- Cursor sparkle + dust overlay -->
+  <CursorEffects />
 </template>
 
 <script>
 import RobotIntro from './components/RobotIntro.vue'
+import LiquidText from './components/LiquidText.vue'
+import CursorEffects from './components/CursorEffects.vue'
 
 export default {
-  components: { RobotIntro },
+  components: { RobotIntro, LiquidText, CursorEffects },
   data() {
     return {
       showIntro: true,
       mobileOpen: false,
       socialOpen: false,
+      theme: 'dark',
+      // Edge-only route navigation state
+      isEdgeNavigating: false,
+      lastEdgeNavAt: 0,
+      routeOrder: ['/', '/about', '/portfolio', '/blog'],
     }
   },
   methods: {
@@ -145,6 +172,67 @@ export default {
     },
     onIntroFinished() {
       this.showIntro = false
+    },
+    applyTheme() {
+      const root = document.documentElement
+      if (this.theme === 'dark') {
+        root.classList.add('dark')
+      } else {
+        root.classList.remove('dark')
+      }
+      localStorage.setItem('theme', this.theme)
+    },
+    toggleTheme() {
+      this.theme = this.theme === 'dark' ? 'light' : 'dark'
+      this.applyTheme()
+    },
+    onWheelEdgeNavigate(e) {
+      // Only consider route navigation when at scroll edges
+      if (this.showIntro || this.mobileOpen) return;
+
+      const now = Date.now();
+      const cooldown = 900; // ms
+      if (this.isEdgeNavigating || now - this.lastEdgeNavAt < cooldown) return;
+
+      const deltaY = e.deltaY || 0;
+      if (Math.abs(deltaY) < 20) return; // ignore tiny scrolls
+
+      const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+      const viewport = window.innerHeight || document.documentElement.clientHeight;
+      const docHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+      );
+      const threshold = 8; // px allowance
+      const atTop = scrollTop <= threshold;
+      const atBottom = scrollTop + viewport >= docHeight - threshold;
+
+      const currentPath = this.$route.path;
+      const idx = this.routeOrder.indexOf(currentPath);
+      if (idx === -1) return;
+
+      let targetIdx = idx;
+      if (deltaY > 0 && atBottom && idx < this.routeOrder.length - 1) {
+        targetIdx = idx + 1;
+      } else if (deltaY < 0 && atTop && idx > 0) {
+        targetIdx = idx - 1;
+      }
+
+      if (targetIdx !== idx) {
+        // prevent native scroll only when we are navigating
+        if (e.cancelable) e.preventDefault();
+        this.isEdgeNavigating = true;
+        this.lastEdgeNavAt = now;
+        this.$router.push(this.routeOrder[targetIdx]).finally(() => {
+          setTimeout(() => {
+            this.isEdgeNavigating = false;
+          }, cooldown);
+        });
+      }
     }
   },
   watch: {
@@ -152,7 +240,29 @@ export default {
       // Tutup menu saat navigasi halaman
       this.mobileOpen = false
       this.socialOpen = false
+      // Scroll to top so the next view starts at the top (below fixed navbar)
+      this.$nextTick(() => {
+        // Use immediate scroll; the content container already has top margin for navbar
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      });
     }
+  },
+  mounted() {
+    // Attach edge-only wheel navigation
+    window.addEventListener('wheel', this.onWheelEdgeNavigate, { passive: false });
+    // Initialize theme
+    const saved = localStorage.getItem('theme')
+    if (saved === 'light' || saved === 'dark') {
+      this.theme = saved
+    } else {
+      // fallback to prefers-color-scheme, default to dark
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+      this.theme = prefersDark ? 'dark' : 'dark'
+    }
+    this.applyTheme()
+  },
+  beforeUnmount() {
+    window.removeEventListener('wheel', this.onWheelEdgeNavigate);
   }
 }
 </script>
@@ -187,11 +297,9 @@ export default {
 
 body {
   font-family: 'Poppins', sans-serif;
-  background: hsl(0, 0%, 7%);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   height: 100vh;
 }
 
