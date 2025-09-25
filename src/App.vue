@@ -7,12 +7,18 @@
       <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between px-5 py-2 md:py-3">
         <button @click="redirectToHome" class="flex items-center" aria-label="Go to Home">
           <LiquidText class="fadein-bot hover:brightness-110"
+            :key="theme"
             text="Febrian Sitorus"
-            :width="230"
-            :height="34"
-            :fontSize="22"
+            :width="isMobile ? 200 : 230"
+            :height="isMobile ? 30 : 34"
+            :fontSize="isMobile ? 20 : 22"
             fontFamily="EB Garamond, serif"
             fontWeight="600"
+            :color="theme === 'dark' ? '#fde68a' : '#0f172a'"
+            :midColor="''"
+            :hoverColor="theme === 'dark' ? '#facc15' : '#d97706'"
+            :strokeColor="''"
+            :strokeWidth="0"
           />
         </button>
 
@@ -106,7 +112,7 @@
         <a href="https://id.linkedin.com/in/febrian-sitorus" target="_blank" rel="noopener" aria-label="Open LinkedIn"
            class="flex items-center gap-2">
           <span class="px-2 py-1 text-xs rounded-md bg-[#1e1e1e] text-white border border-white/10 shadow hidden sm:inline-block">LinkedIn</span>
-          <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
+          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
             <img class="w-5 h-5" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/600px-LinkedIn_logo_initials.png" alt="LinkedIn" />
           </span>
         </a>
@@ -114,7 +120,7 @@
         <a href="https://www.instagram.com/febrianpane/." target="_blank" rel="noopener" aria-label="Open Instagram"
            class="flex items-center gap-2">
           <span class="px-2 py-1 text-xs rounded-md bg-[#1e1e1e] text-white border border-white/10 shadow hidden sm:inline-block">Instagram</span>
-          <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
+          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
             <img class="w-5 h-5" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" alt="Instagram" />
           </span>
         </a>
@@ -122,7 +128,7 @@
         <a href="https://github.com/Febrianpane" target="_blank" rel="noopener" aria-label="Open GitHub"
            class="flex items-center gap-2">
           <span class="px-2 py-1 text-xs rounded-md bg-[#1e1e1e] text-white border border-white/10 shadow hidden sm:inline-block">GitHub</span>
-          <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
+          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
             <img class="w-5 h-5" src="https://seeklogo.com/images/G/github-logo-2E3852456C-seeklogo.com.png" alt="GitHub" />
           </span>
         </a>
@@ -130,11 +136,11 @@
 
       <!-- Main FAB toggle (mobile) -->
       <button @click="socialOpen = !socialOpen" aria-label="Toggle social links"
-              class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#ffdb70] text-black shadow-lg hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-[#ffdb70]/60">
-        <svg v-if="!socialOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#ffdb70] text-black shadow-lg hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-[#ffdb70]/60">
+        <svg v-if="!socialOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16M12 4v16" />
         </svg>
-        <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -144,6 +150,7 @@
   <!-- Opening animation overlay -->
   <RobotIntro v-if="showIntro" @finished="onIntroFinished" />
   <!-- Cursor sparkle + dust overlay -->
+  <AudioPlayer v-if="!showIntro" title="Background Music" :src="songUrl" />
   <CursorEffects />
 </template>
 
@@ -151,19 +158,28 @@
 import RobotIntro from './components/RobotIntro.vue'
 import LiquidText from './components/LiquidText.vue'
 import CursorEffects from './components/CursorEffects.vue'
+import AudioPlayer from './components/AudioPlayer.vue'
+import songAsset from '@/assets/song.mp3'
 
 export default {
-  components: { RobotIntro, LiquidText, CursorEffects },
+  components: { RobotIntro, LiquidText, CursorEffects, AudioPlayer },
   data() {
     return {
+      songUrl: songAsset,
       showIntro: true,
       mobileOpen: false,
       socialOpen: false,
       theme: 'dark',
+      vw: (typeof window !== 'undefined' ? window.innerWidth : 1024),
       // Edge-only route navigation state
       isEdgeNavigating: false,
       lastEdgeNavAt: 0,
       routeOrder: ['/', '/about', '/portfolio', '/blog'],
+    }
+  },
+  computed: {
+    isMobile() {
+      return this.vw < 640
     }
   },
   methods: {
@@ -250,6 +266,9 @@ export default {
   mounted() {
     // Attach edge-only wheel navigation
     window.addEventListener('wheel', this.onWheelEdgeNavigate, { passive: false });
+    // Track viewport width for responsive logo sizing
+    this._onResize = () => { this.vw = window.innerWidth }
+    window.addEventListener('resize', this._onResize)
     // Initialize theme
     const saved = localStorage.getItem('theme')
     if (saved === 'light' || saved === 'dark') {
@@ -263,13 +282,13 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener('wheel', this.onWheelEdgeNavigate);
+    window.removeEventListener('resize', this._onResize)
   }
 }
 </script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&display=swap');
-
 *,
 *::before,
 *::after {

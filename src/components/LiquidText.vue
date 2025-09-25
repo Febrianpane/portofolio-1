@@ -16,6 +16,9 @@ export default {
     fontSize: { type: Number, default: 22 },
     color: { type: String, default: '#ffdb70' },
     hoverColor: { type: String, default: '#ffe08a' },
+    midColor: { type: String, default: '' },
+    strokeColor: { type: String, default: '' },
+    strokeWidth: { type: Number, default: 0 },
     width: { type: Number, default: 220 },
     height: { type: Number, default: 36 }
   },
@@ -61,7 +64,18 @@ export default {
       // gradient for subtle depth
       const grad = ctx.createLinearGradient(0, 0, 0, this.height);
       grad.addColorStop(0, this.color);
+      if (this.midColor && typeof this.midColor === 'string' && this.midColor.length > 0) {
+        grad.addColorStop(0.5, this.midColor);
+      }
       grad.addColorStop(1, this.hoverColor);
+      // Optional stroke for stronger contrast
+      if (this.strokeColor && this.strokeWidth > 0) {
+        ctx.lineJoin = 'round';
+        ctx.miterLimit = 2;
+        ctx.strokeStyle = this.strokeColor;
+        ctx.lineWidth = this.strokeWidth;
+        ctx.strokeText(this.text, 0, y);
+      }
       ctx.fillStyle = grad;
       ctx.fillText(this.text, 0, y);
 

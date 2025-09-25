@@ -12,7 +12,7 @@
         <!-- Left: Text -->
         <div class="text-center md:text-left order-2 md:order-1">
           <p class="text-amber-700 dark:text-amber-200 tracking-wide fade-in-from-left">Hello World, I'm</p>
-          <h1 class="mt-2 text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white retro-font fadein-up">Febrian Sitorus</h1>
+          <h1 class="mt-2 text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white retro-font fadein-up beat-scale">Febrian Sitorus</h1>
           <div class="py-3">
             <h2 class="typewrite text-lg md:text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-amber-500 dark:from-slate-100 dark:to-yellow-500 fadein-up" ref="typewriter">
               <span class="wrap">{{ txt }}</span>
@@ -31,23 +31,24 @@
             <router-link to="/portfolio" class="btn-primary font-semibold">
               View Portfolio
             </router-link>
-            <router-link to="/about" class="btn-ghost">
-              Contact
-            </router-link>
           </div>
         </div>
 
         <!-- Right: Avatar -->
         <div class="flex justify-center md:justify-end order-1 md:order-2 items-center fadein-right">
-          <img
-            alt="Portrait of Febrian Sitorus"
-            loading="lazy"
-            width="1000"
-            height="1000"
-            decoding="async"
-            class="w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full border-4 animated-border pict object-cover"
-            src="https://media.licdn.com/dms/image/v2/D4E03AQFT-AmAqVtJ5A/profile-displayphoto-shrink_200_200/B4EZQL6XyoHsAY-/0/1735366641355?e=2147483647&v=beta&t=lsNyzyIcJBr730S7sgQ40PRCxw-Qu236eqRQrMriz9U"
-          />
+          <div class="relative inline-block">
+            <img
+              alt="Portrait of Febrian Sitorus"
+              loading="lazy"
+              width="1000"
+              height="1000"
+              decoding="async"
+              class="w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full border-4 animated-border pict object-cover"
+              src="https://media.licdn.com/dms/image/v2/D4E03AQFT-AmAqVtJ5A/profile-displayphoto-shrink_200_200/B4EZQL6XyoHsAY-/0/1735366641355?e=2147483647&v=beta&t=lsNyzyIcJBr730S7sgQ40PRCxw-Qu236eqRQrMriz9U"
+            />
+            <!-- Rainbow radial bars synced to music, clipped around photo circle -->
+            <AvatarVisualizer :innerRatio="1.0" :edgeOffset="3" :gain="1.45" :barWidth="3" :bars="200" />
+          </div>
         </div>
       </div>
     </section>
@@ -116,9 +117,10 @@
 
 <script>
 import SectionHeader from '@/components/SectionHeader.vue'
+import AvatarVisualizer from '@/components/AvatarVisualizer.vue'
 export default {
   name: 'HomeView',
-  components: { SectionHeader },
+  components: { SectionHeader, AvatarVisualizer },
   data() {
     return {
       toRotate: ["Frontend Developer", "Full-stack Developer", "Informatics Student", "UI UX Design"],
@@ -378,5 +380,24 @@ body {
 
 .retro-font {
   font-family: 'Press Start 2P', cursive;
+}
+
+/* Music-synced pulse (uses global CSS var --beat set by AudioPlayer analyser) */
+:root { --beat: 0; }
+
+.beat-scale {
+  will-change: transform, filter;
+  transition: transform 80ms linear, filter 160ms ease;
+  transform: scale(calc(1 + (var(--beat) * 0.12)));
+  filter: brightness(calc(1 + (var(--beat) * 0.35)));
+}
+
+.beat-glow {
+  will-change: box-shadow, transform;
+  transition: box-shadow 100ms linear, transform 100ms linear;
+  box-shadow:
+    0 0 calc(12px + var(--beat) * 48px) rgba(255, 215, 0, calc(0.35 + var(--beat) * 0.55)),
+    0 0 calc(6px + var(--beat) * 24px) rgba(34, 197, 94, calc(0.14 + var(--beat) * 0.35));
+  transform: translateZ(0) scale(calc(1 + var(--beat) * 0.08));
 }
 </style>
