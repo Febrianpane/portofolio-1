@@ -53,10 +53,16 @@
               :gapOutside="2"
               :edgeOffset="0"
               imageSelector=".pict"
-              :gain="1.2"
-              :barWidth="3"
-              :lengthScale="0.6"
-              :bars="200"
+              :gain="0.45"
+              :barWidth="2"
+              :lengthScale="0.45"
+              :bars="72"
+              :showInnerRings="true"
+              :ringWidth="2"
+              ringColor="#A855F7"
+              dottedRingColor="#34D399"
+              :dashedSegRatio="1.6"
+              :dashedGapRatio="0.6"
             />
           </div>
         </div>

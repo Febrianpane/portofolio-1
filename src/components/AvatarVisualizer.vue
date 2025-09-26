@@ -10,9 +10,9 @@ export default {
   props: {
     // Fine-tune multiplier relative to actual <img> radius (1.0 hugs edge)
     innerRatio: { type: Number, default: 1.0 },
-    gain: { type: Number, default: 1.05 },
+    gain: { type: Number, default: 0.45 },
     barWidth: { type: Number, default: 2 },
-    bars: { type: Number, default: 140 },
+    bars: { type: Number, default: 72 },
     // pixel adjustment to push bars closer/farther from the photo edge
     edgeOffset: { type: Number, default: 0 },
     // clear gap outside the visible edge where bars begin (negatif = sedikit overlap)
@@ -24,7 +24,23 @@ export default {
     // extra pixels to expand drawing area beyond the image bounds so bars aren't cut off
     margin: { type: Number, default: 60 },
     // global scaler for bar length so amplitude can be shortened without affecting thickness
-    lengthScale: { type: Number, default: 0.8 },
+    lengthScale: { type: Number, default: 0.45 },
+    // style controls to match sample
+    showInnerRings: { type: Boolean, default: true },
+    ringWidth: { type: Number, default: 2 },
+    ringColor: { type: String, default: '#A855F7' },
+    dottedRingColor: { type: String, default: '#34D399' },
+    dashedSegRatio: { type: Number, default: 1.6 }, // seg length ≈ ratio * barWidth
+    dashedGapRatio: { type: Number, default: 0.6 }, // gap ≈ ratio * seg
+    // glow controls for bars (disabled by default)
+    glowBlur: { type: Number, default: 0 },
+    glowAlpha: { type: Number, default: 0 },
+    // bass visual controls
+    bassBoost: { type: Number, default: 1.3 },     // multiplier for low-freq bars
+    bassCutoff: { type: Number, default: 0.18 },     // tm threshold considered bass
+    showBassPulse: { type: Boolean, default: true }, // draw pulsing ring with bass
+    bassPulseColor: { type: String, default: 'rgba(56, 189, 248, 0.55)' }, // cyan
+    bassPulseWidth: { type: Number, default: 7 },
   },
   data() {
     return {
@@ -263,26 +279,86 @@ export default {
         // Beat boosts more on bass, a bit on treble
         const beatBoost = 1 + beat * 0.95 + bassSmooth * 1.4 + trebleSmooth * 0.6
 
-        // Draw colorful bars with tip caps and subtle inner glow
+        // Optional bass pulse ring (outside innerR)
+        if (this.showBassPulse) {
+          const pulseR = innerR + Math.max(6, this.barWidth * 3)
+          const pulseAlpha = Math.max(0, Math.min(1, (bassSmooth * 1.2)))
+          ctx.save()
+          ctx.strokeStyle = this.bassPulseColor
+          ctx.globalAlpha = pulseAlpha
+          ctx.lineWidth = this.bassPulseWidth
+          // no glow
+          ctx.shadowBlur = 0
+          ctx.shadowColor = 'transparent'
+          ctx.setLineDash([])
+          ctx.beginPath()
+          ctx.arc(0, 0, pulseR, 0, Math.PI * 2)
+          ctx.stroke()
+          ctx.restore()
+        }
+
+        // Optional inner rings (solid + dotted) like the sample
+        if (this.showInnerRings) {
+          // solid inner ring
+          ctx.save()
+          ctx.lineWidth = this.ringWidth
+          ctx.setLineDash([])
+          ctx.strokeStyle = this.ringColor
+          ctx.beginPath()
+          ctx.arc(0, 0, innerR, 0, Math.PI * 2)
+          ctx.stroke()
+          ctx.restore()
+
+          // dotted ring slightly inside
+          const dottedR = Math.max(1, innerR - 4)
+          ctx.save()
+          ctx.lineWidth = 1.5
+          ctx.setLineDash([2, 6])
+          ctx.strokeStyle = this.dottedRingColor
+          ctx.beginPath()
+          ctx.arc(0, 0, dottedR, 0, Math.PI * 2)
+          ctx.stroke()
+          ctx.restore()
+        }
+
+        // Draw dashed cyan→blue→magenta spectrum bars with rounded tips
         for (let i = 0; i < N; i++) {
           const t = i / N
           const angle = t * Math.PI * 2
-          const v = smoothed(t)
-          // Determine frequency region for this bar
-          const idxForT = Math.min(buf.length - 1, Math.floor(Math.pow(t, 0.6) * buf.length))
+          // 4-way mirror mapping (atas-bawah dan kiri-kanan simetris)
+          // fold t into 4 kuadran, lalu mirror ke 0..1
+          const quad = Math.floor(t * 4) // 0..3
+          const local = t * 4 - quad       // 0..1 dalam kuadran
+          const tm = local < 0.5 ? (local * 2) : ((1 - local) * 2) // 0..1 mirrored
+          const v = smoothed(tm)
+          // Determine frequency region for this bar (pakai tm)
+          const idxForT = Math.min(buf.length - 1, Math.floor(Math.pow(tm, 0.6) * buf.length))
           const f = idxForT / Math.max(1, buf.length - 1)
           // Weighting: emphasize bass (<~0.15) and treble (>~0.7), strongly de-emphasize mids
           let weight = 0.45 // base for mids (lebih kecil)
           if (f < 0.15) weight = 2.4 + bassSmooth * 1.2
           else if (f > 0.70) weight = 2.0 + trebleSmooth * 0.9
           else if (f > 0.30 && f < 0.60) weight = 0.4
-          const v2 = Math.max(0, Math.min(1, v * weight))
-          const amp = innerR * this.lengthScale * (0.05 + v2 * this.gain * beatBoost * (1 + bassSmooth * 0.9 + trebleSmooth * 0.4))
+          let v2 = Math.max(0, Math.min(1, v * weight))
+          // extra boost + brightness for bass segments (tm below cutoff)
+          const isBassSeg = tm <= this.bassCutoff
+          if (isBassSeg) {
+            v2 *= this.bassBoost * (1 + bassSmooth * 0.35)
+          }
+          const amp = innerR * this.lengthScale * (0.03 + v2 * this.gain * beatBoost * (1 + bassSmooth * 0.75 + trebleSmooth * 0.35))
 
-          // Color palette sweeps hue around the circle
-          const hue = (t * 360)
-          const sat = 96
-          const light = 50 + v2 * 28
+          // Cyan -> blue -> magenta gradient around the circle
+          // map t to hue: 190 (cyan) -> 230 (blue) -> 300 (magenta)
+          let hue
+          if (t < 0.5) {
+            const k = t / 0.5
+            hue = 190 + (230 - 190) * k
+          } else {
+            const k = (t - 0.5) / 0.5
+            hue = 230 + (300 - 230) * k
+          }
+          const sat = 92
+          const light = 58 + v2 * 8 + (isBassSeg ? bassSmooth * 8 : 0)
           const color = `hsl(${hue} ${sat}% ${light}%)`
 
           const x0 = Math.cos(angle) * innerR
@@ -290,33 +366,22 @@ export default {
           const x1 = Math.cos(angle) * (innerR + amp)
           const y1 = Math.sin(angle) * (innerR + amp)
 
-          // Outer bright stroke
+          // (Glow under-stroke removed)
+          let seg = Math.max(2.5, lw * this.dashedSegRatio)
+          let gap = Math.max(1.5, seg * this.dashedGapRatio)
+
+          // Main dashed stroke
           ctx.strokeStyle = color
           ctx.lineWidth = lw
           ctx.lineCap = 'round'
+          seg = Math.max(2.5, lw * this.dashedSegRatio)
+          gap = Math.max(1.5, seg * this.dashedGapRatio)
+          ctx.setLineDash([seg, gap])
           ctx.beginPath()
           ctx.moveTo(x0, y0)
           ctx.lineTo(x1, y1)
           ctx.stroke()
-
-          // Tip cap (non-glow)
-          ctx.save()
-          ctx.shadowBlur = 0
-          ctx.fillStyle = color
-          ctx.beginPath()
-          ctx.arc(x1, y1, Math.max(1.2, lw * 0.9), 0, Math.PI * 2)
-          ctx.fill()
-          ctx.restore()
-
-          // Inner soft stroke for depth
-          ctx.strokeStyle = `hsla(${hue} ${sat}% 85% / 0.35)`
-          ctx.lineWidth = Math.max(1, lw * 0.6)
-          ctx.beginPath()
-          const xi = Math.cos(angle) * (innerR + amp * 0.45)
-          const yi = Math.sin(angle) * (innerR + amp * 0.45)
-          ctx.moveTo(x0, y0)
-          ctx.lineTo(xi, yi)
-          ctx.stroke()
+          ctx.setLineDash([])
         }
 
         ctx.restore() // clip
