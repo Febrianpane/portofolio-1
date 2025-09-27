@@ -87,13 +87,15 @@ export default {
       return null
     }
     this.imgEl = findNearestImg(el)
+    // image beat animation disabled; no need to set CSS vars
     // Observe DOM changes to catch IMG that appears later (e.g., v-if, lazy-load)
     if (el && !this.imgEl && 'MutationObserver' in window) {
       this.mo = new MutationObserver(() => {
         const found = findNearestImg(el)
         if (found) {
           this.imgEl = found
-          // trigger a redraw next frame by toggling a tiny state if needed
+          // if audio already active, ensure spin class is applied
+          if (this.active) this.applySpin()
         }
       })
       this.mo.observe(el, { childList: true, subtree: true, attributes: true })
@@ -153,6 +155,8 @@ export default {
       this.audioCtx = e.detail && e.detail.audioCtx || null
       if (this.analyser) {
         this.active = true
+        // add spin to image during playback
+        this.applySpin()
         this.start()
       }
     },
@@ -163,6 +167,18 @@ export default {
       if (cv) {
         const ctx = cv.getContext('2d')
         ctx.clearRect(0,0,cv.width,cv.height)
+      }
+      // remove spin when audio stops
+      this.clearSpin()
+    },
+    applySpin() {
+      if (this.imgEl && this.imgEl.classList) {
+        try { this.imgEl.classList.add('spin-on-play') } catch (e) { void 0 }
+      }
+    },
+    clearSpin() {
+      if (this.imgEl && this.imgEl.classList) {
+        try { this.imgEl.classList.remove('spin-on-play') } catch (e) { void 0 }
       }
     },
     start() {
@@ -239,6 +255,7 @@ export default {
         const bassNow = (bassSum / bassBins) / 255
         const bassSmooth = this.prevBass * 0.82 + bassNow * 0.18
         this.prevBass = bassSmooth
+        // image beat animation disabled; do not publish CSS vars to image
 
         // Treble detection from high-frequency bins (smoothed)
         const trebleStart = Math.floor(buf.length * 0.72)

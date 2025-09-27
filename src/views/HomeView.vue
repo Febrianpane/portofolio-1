@@ -139,7 +139,7 @@ export default {
   components: { SectionHeader, AvatarVisualizer },
   data() {
     return {
-      toRotate: ["Frontend Developer", "Full-stack Developer", "Informatics Student", "UI UX Design"],
+      toRotate: ["Frontend Developer", "Full-stack Web", "Informatics Student", "UI UX Design"],
       period: 2000,
       txt: '',
       loopNum: 0,
@@ -285,6 +285,24 @@ body {
   box-shadow: 0px 0px 73px -9px rgba(255,219,112,0.44);
 -webkit-box-shadow: 0px 0px 73px -9px rgba(255,219,112,0.44);
 -moz-box-shadow: 0px 0px 73px -9px rgba(255,219,112,0.44);
+}
+
+/* image stays static; beat effect removed */
+
+/* Smooth spin when music is playing (class toggled by AvatarVisualizer events) */
+.spin-on-play {
+  will-change: transform;
+  animation: avatarSpin 14s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+@keyframes avatarSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin-on-play { animation-duration: 0s; animation-iteration-count: 0; }
 }
 
 .fadein-up {
