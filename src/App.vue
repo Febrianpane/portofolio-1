@@ -1,70 +1,127 @@
 <template>
   <!-- component -->
   <!-- This is an example component -->
+  <!-- Bokeh orbs background -->
+  <BokehOrbs />
+  <!-- Fullscreen intro: blocks interactions and auto-dismisses -->
+  <FuzzyIntroOverlay
+    v-if="showIntro"
+    title="Febrian Pane"
+    tagline="Frontend Developer • UI/UX"
+    :duration-ms="3000"
+    @done="showIntro=false"
+  />
+  <GalaxyBackground
+    :meteor="true"
+    :meteorCount="3"
+    :speedMultiplier="0.9"
+    :showerEvery="15"
+    :showerBurst="2"
+    :angleBaseDeg="65"
+    :angleSpreadDeg="35"
+    :trailPreset="theme === 'dark' ? 'amber' : 'rainbow'"
+    :trailWidth="1"
+    :starDensityDivisor="18000"
+    :maxStars="160"
+    :maxDpr="1.5"
+    :respectReducedMotion="false"
+  />
   <div class="max-w-7xl mx-auto flex flex-col relative">
 
     <nav class="fixed inset-x-0 top-0 z-[98] w-full border-b border-black/10 dark:border-[#2a2a2a] backdrop-blur-md bg-white/80 dark:bg-[#121212]/80">
-      <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between px-5 py-2 md:py-3">
-        <button @click="redirectToHome" class="flex items-center" aria-label="Go to Home">
-          <LiquidText class="fadein-bot hover:brightness-110"
-            :key="theme"
-            text="Febrian Sitorus"
-            :width="isMobile ? 200 : 230"
-            :height="isMobile ? 30 : 34"
-            :fontSize="isMobile ? 20 : 22"
-            fontFamily="EB Garamond, serif"
-            fontWeight="600"
-            :color="theme === 'dark' ? '#fde68a' : '#0f172a'"
-            :midColor="''"
-            :hoverColor="theme === 'dark' ? '#facc15' : '#d97706'"
-            :strokeColor="''"
-            :strokeWidth="0"
-          />
-        </button>
-
-        <!-- Right side: socials on md+, hamburger on mobile -->
-        <div class="flex items-center gap-2 md:order-2">
-          <!-- Theme toggle -->
-          <button @click="toggleTheme" class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-300 hover:text-white hover:bg-[#1e1e1e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ffdb70] focus:ring-offset-transparent" aria-label="Toggle theme">
-            <svg v-if="theme==='dark'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 0 1-10.45-10.5 1 1 0 0 0-.11-1A1 1 0 0 0 8 1a10 10 0 1 0 11.31 11.31 1 1 0 0 0 .33-.76Z"/>
-            </svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 4a1 1 0 0 0 1-1V1h-2v2a1 1 0 0 0 1 1zm0 16a1 1 0 0 0-1 1v2h2v-2a1 1 0 0 0-1-1zM4 13a1 1 0 0 0-1-1H1v2h2a1 1 0 0 0 1-1zm19 0a1 1 0 0 0-1-1h-2v2h2a1 1 0 0 0 1-1zM6.76 19.16l-1.42 1.42-1.79-1.8 1.41-1.41 1.8 1.79zm13.21-.38l-1.79 1.8-1.42-1.42 1.8-1.79 1.41 1.41zM12 6a6 6 0 1 0 6 6 6.01 6.01 0 0 0-6-6z"/>
-            </svg>
+      <div class="max-w-7xl mx-auto px-5 py-1 md:py-1.5">
+        <!-- Mobile: Logo left, hamburger right -->
+        <div class="flex md:hidden items-center justify-between h-9">
+          <button @click="redirectToHome" class="flex items-center max-w-[55vw]" aria-label="Go to Home">
+            <GlitchText
+              children="Febrian"
+              :speed="0.5"
+              :enable-shadows="true"
+              :enable-on-hover="true"
+              class-name="matura-font !text-[1.25rem] !font-semibold !mx-0 max-w-full truncate leading-none"
+              :class="theme === 'dark' ? '!text-amber-200' : '!text-slate-900'"
+            />
           </button>
-          <!-- Hamburger for mobile -->
-          <button @click="mobileOpen = !mobileOpen" class="md:hidden inline-flex items-center justify-center rounded-md p-1.5 text-gray-300 hover:text-white hover:bg-[#1e1e1e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ffdb70] focus:ring-offset-transparent" :aria-expanded="mobileOpen.toString()" aria-label="Toggle navigation">
-            <svg v-if="!mobileOpen" class="h-5 w-5 md:h-6 md:w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-            <svg v-else class="h-5 w-5 md:h-6 md:w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          
+          <div class="flex items-center gap-3">
+            <!-- Theme toggle -->
+            <button @click="toggleTheme" class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-300 hover:text-white hover:bg-[#1e1e1e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ffdb70] focus:ring-offset-transparent" aria-label="Toggle theme">
+              <svg v-if="theme==='dark'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 0 1-10.45-10.5 1 1 0 0 0-.11-1A1 1 0 0 0 8 1a10 10 0 1 0 11.31 11.31 1 1 0 0 0 .33-.76Z"/>
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 4a1 1 0 0 0 1-1V1h-2v2a1 1 0 0 0 1 1zm0 16a1 1 0 0 0-1 1v2h2v-2a1 1 0 0 0-1-1zM4 13a1 1 0 0 0-1-1H1v2h2a1 1 0 0 0 1-1zm19 0a1 1 0 0 0-1-1h-2v2h2a1 1 0 0 0 1-1zM6.76 19.16l-1.42 1.42-1.79-1.8 1.41-1.41 1.8 1.79zm13.21-.38l-1.79 1.8-1.42-1.42 1.8-1.79 1.41 1.41zM12 6a6 6 0 1 0 6 6 6.01 6.01 0 0 0-6-6z"/>
+              </svg>
+            </button>
+            <!-- Hamburger -->
+            <button @click="mobileOpen = !mobileOpen" class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-300 hover:text-white hover:bg-[#1e1e1e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ffdb70] focus:ring-offset-transparent" :aria-expanded="mobileOpen.toString()" aria-label="Toggle navigation">
+              <svg v-if="!mobileOpen" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+              <svg v-else class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        <!-- Desktop menu -->
-        <div class="hidden md:flex justify-between items-center w-full md:w-auto md:order-1" id="menu-desktop">
-          <ul class="flex-col md:flex-row flex md:space-x-8 mt-4 md:mt-0 md:text-sm md:font-medium">
+        <!-- Desktop: Left menu | Center logo | Right menu + theme -->
+        <div class="hidden md:grid md:grid-cols-3 md:items-center md:gap-4">
+          <!-- Left menu -->
+          <ul class="flex items-center justify-start space-x-6 text-sm font-medium">
             <li>
-              <router-link to="/"
-                class="fadein-bot text-slate-700 hover:text-black dark:text-gray-300 dark:hover:text-white md:border-0 block pl-3 pr-4 py-2 md:p-0"
-                aria-current="page">Home</router-link>
+              <a href="/#home" @click="mobileOpen=false; socialOpen=false"
+                class="fadein-bot text-slate-700 hover:text-black dark:text-gray-300 dark:hover:text-white py-2"
+                :class="{ 'active-link': activeSection === 'home' }"
+                aria-current="page">Home</a>
             </li>
             <li>
-              <router-link to="/about"
-                class="fadein-bot fadein-1 text-slate-700 hover:text-black dark:text-gray-300 dark:hover:text-white md:border-0 block pl-3 pr-4 py-2 md:p-0">About</router-link>
-            </li>
-            <li>
-              <router-link to="/portfolio"
-                class="fadein-bot fadein-2 text-slate-700 hover:text-black dark:text-gray-300 dark:hover:text-white md:border-0 block pl-3 pr-4 py-2 md:p-0">Portofolio</router-link>
-            </li>
-            <li>
-              <router-link to="/blog"
-                class="fadein-bot fadein-3 text-slate-700 hover:text-black dark:text-gray-300 dark:hover:text-white md:border-0 block pl-3 pr-4 py-2 md:p-0 blog">Games</router-link>
+              <a href="/#about" @click="mobileOpen=false; socialOpen=false"
+                class="fadein-bot fadein-1 text-slate-700 hover:text-black dark:text-gray-300 dark:hover:text-white py-2"
+                :class="{ 'active-link': activeSection === 'about' }">About</a>
             </li>
           </ul>
+
+          <!-- Center logo (desktop) -->
+          <div class="flex items-center justify-center px-2 h-9 md:h-11">
+            <button @click="redirectToHome" class="flex items-center" aria-label="Go to Home">
+              <GlitchText
+                children="Febrian"
+                :speed="0.5"
+                :enable-shadows="true"
+                :enable-on-hover="true"
+                class-name="matura-font !text-[1.375rem] !font-semibold !mx-0 leading-none"
+                :class="theme === 'dark' ? '!text-amber-200' : '!text-slate-900'"
+              />
+            </button>
+          </div>
+
+          <!-- Right menu + theme -->
+          <div class="flex items-center justify-end space-x-6">
+            <ul class="flex items-center space-x-6 text-sm font-medium">
+              <li>
+                <a href="/#portfolio" @click="mobileOpen=false; socialOpen=false"
+                  class="fadein-bot fadein-2 text-slate-700 hover:text-black dark:text-gray-300 dark:hover:text-white py-2"
+                  :class="{ 'active-link': activeSection === 'portfolio' }">Portofolio</a>
+              </li>
+              <li>
+                <a href="/#contact" @click="mobileOpen=false; socialOpen=false" class="fadein-bot fadein-3 text-slate-700 hover:text-black dark:text-gray-300 dark:hover:text-white py-2" :class="{ 'active-link': activeSection === 'contact' }">
+                  Contact
+                </a>
+              </li>
+              
+              
+            </ul>
+            <!-- Theme toggle -->
+            <button @click="toggleTheme" class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-300 hover:text-white hover:bg-[#1e1e1e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ffdb70] focus:ring-offset-transparent" aria-label="Toggle theme">
+              <svg v-if="theme==='dark'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 0 1-10.45-10.5 1 1 0 0 0-.11-1A1 1 0 0 0 8 1a10 10 0 1 0 11.31 11.31 1 1 0 0 0 .33-.76Z"/>
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 4a1 1 0 0 0 1-1V1h-2v2a1 1 0 0 0 1 1zm0 16a1 1 0 0 0-1 1v2h2v-2a1 1 0 0 0-1-1zM4 13a1 1 0 0 0-1-1H1v2h2a1 1 0 0 0 1-1zm19 0a1 1 0 0 0-1-1h-2v2h2a1 1 0 0 0 1-1zM6.76 19.16l-1.42 1.42-1.79-1.8 1.41-1.41 1.8 1.79zm13.21-.38l-1.79 1.8-1.42-1.42 1.8-1.79 1.41 1.41zM12 6a6 6 0 1 0 6 6 6.01 6.01 0 0 0-6-6z"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -73,35 +130,50 @@
         <div v-if="mobileOpen" class="md:hidden border-t border-black/10 dark:border-[#2a2a2a]">
           <ul class="px-4 py-2 space-y-1">
             <li>
-              <router-link to="/" class="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-[#1e1e1e]">
+              <a href="/#home" @click="mobileOpen=false; socialOpen=false" class="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-[#1e1e1e]">
                 <span>Home</span>
-              </router-link>
+              </a>
             </li>
             <li>
-              <router-link to="/about" class="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-[#1e1e1e]">
+              <a href="/#about" @click="mobileOpen=false; socialOpen=false" class="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-[#1e1e1e]">
                 <span>About</span>
-              </router-link>
+              </a>
             </li>
             <li>
-              <router-link to="/portfolio" class="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-[#1e1e1e]">
+              <a href="/#portfolio" @click="mobileOpen=false; socialOpen=false" class="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-[#1e1e1e]">
                 <span>Portofolio</span>
-              </router-link>
+              </a>
             </li>
             <li>
-              <router-link to="/blog" class="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-[#1e1e1e]">
-                <span>Games</span>
-              </router-link>
+              <a href="/#contact" @click="mobileOpen=false; socialOpen=false" class="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-gray-200 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-[#1e1e1e]">
+                <span>Contact</span>
+              </a>
             </li>
+            
+            
           </ul>
         </div>
       </transition>
     </nav>
 
     <div class="mt-[70px] md:mt-[80px]">
-      <transition name="page" mode="out-in">
-        <router-view />
-      </transition>
+      <router-view v-slot="{ Component }">
+        <transition name="page" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </div>
+
+    <!-- Global footer curved loop -->
+    <footer class="mt-6">
+      <CurvedLoop
+        marquee-text="BUILD ✦ CODE ✦ CREATE ✦ INNOVATE ✦ INSPIRE ✦"
+        :speed="2"
+        :curve-amount="300"
+        direction="left"
+        :interactive="true"
+      />
+    </footer>
 
     <!-- Floating Social Buttons -->
     <div class="fixed bottom-6 sm:bottom-8 md:bottom-10 right-4 sm:right-5 md:right-6 z-[99] group">
@@ -125,8 +197,10 @@
         <!-- GitHub -->
         <a href="https://github.com/Febrianpane" target="_blank" rel="noopener" aria-label="Open GitHub"
            class="inline-flex items-center">
-          <span class="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
-            <img class="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6" src="https://seeklogo.com/images/G/github-logo-2E3852456C-seeklogo.com.png" alt="GitHub" />
+          <span class="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow text-white/90">
+            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+            </svg>
           </span>
         </a>
       </div>
@@ -144,34 +218,33 @@
     </div>
   </div>
   
-  <!-- Opening animation overlay -->
-  <RobotIntro v-if="showIntro" @finished="onIntroFinished" />
   <!-- Cursor sparkle + dust overlay -->
-  <AudioPlayer v-if="!showIntro" title="Background Music" :src="songUrl" />
+  <AudioPlayer title="Background Music" :src="songUrl" />
   <CursorEffects />
 </template>
 
 <script>
-import RobotIntro from './components/RobotIntro.vue'
-import LiquidText from './components/LiquidText.vue'
-import CursorEffects from './components/CursorEffects.vue'
+import CurvedLoop from '@/components/CurvedLoop.vue'
+import GlitchText from './components/GlitchText.vue'
 import AudioPlayer from './components/AudioPlayer.vue'
+import GalaxyBackground from './components/GalaxyBackground.vue'
+import CursorEffects from './components/CursorEffects.vue'
+import BokehOrbs from './components/BokehOrbs.vue'
+import FuzzyIntroOverlay from './components/FuzzyIntroOverlay.vue'
 import songAsset from '@/assets/song.mp3'
 
 export default {
-  components: { RobotIntro, LiquidText, CursorEffects, AudioPlayer },
+  components: { GlitchText, AudioPlayer, CurvedLoop, GalaxyBackground, CursorEffects, BokehOrbs, FuzzyIntroOverlay },
   data() {
     return {
       songUrl: songAsset,
-      showIntro: true,
+      
       mobileOpen: false,
       socialOpen: false,
       theme: 'dark',
       vw: (typeof window !== 'undefined' ? window.innerWidth : 1024),
-      // Edge-only route navigation state
-      isEdgeNavigating: false,
-      lastEdgeNavAt: 0,
-      routeOrder: ['/', '/about', '/portfolio', '/blog'],
+      activeSection: 'home',
+      showIntro: true,
     }
   },
   computed: {
@@ -181,11 +254,19 @@ export default {
   },
   methods: {
     redirectToHome() {
-      this.$router.push('/')
+      // Use native hash navigation + CSS scroll-padding-top
+      if (this.$route.path !== '/') {
+        this.$router.push({ path: '/', hash: '#home' }).catch(() => {})
+      } else {
+        if (window.location.hash !== '#home') {
+          window.location.hash = 'home'
+        } else {
+          const el = document.getElementById('home')
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }
     },
-    onIntroFinished() {
-      this.showIntro = false
-    },
+    
     applyTheme() {
       const root = document.documentElement
       if (this.theme === 'dark') {
@@ -199,73 +280,61 @@ export default {
       this.theme = this.theme === 'dark' ? 'light' : 'dark'
       this.applyTheme()
     },
-    onWheelEdgeNavigate(e) {
-      // Only consider route navigation when at scroll edges
-      if (this.showIntro || this.mobileOpen) return;
-
-      const now = Date.now();
-      const cooldown = 900; // ms
-      if (this.isEdgeNavigating || now - this.lastEdgeNavAt < cooldown) return;
-
-      const deltaY = e.deltaY || 0;
-      if (Math.abs(deltaY) < 20) return; // ignore tiny scrolls
-
-      const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
-      const viewport = window.innerHeight || document.documentElement.clientHeight;
-      const docHeight = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.offsetHeight,
-        document.body.clientHeight,
-        document.documentElement.clientHeight
-      );
-      const threshold = 8; // px allowance
-      const atTop = scrollTop <= threshold;
-      const atBottom = scrollTop + viewport >= docHeight - threshold;
-
-      const currentPath = this.$route.path;
-      const idx = this.routeOrder.indexOf(currentPath);
-      if (idx === -1) return;
-
-      let targetIdx = idx;
-      if (deltaY > 0 && atBottom && idx < this.routeOrder.length - 1) {
-        targetIdx = idx + 1;
-      } else if (deltaY < 0 && atTop && idx > 0) {
-        targetIdx = idx - 1;
+    // Single native scroll using anchor target and CSS scroll-padding-top
+    _performScroll(sectionId, maxTries = 40, intervalMs = 50) {
+      let tries = 0
+      const attempt = () => {
+        const el = document.getElementById(sectionId)
+        if (!el) { if (tries++ < maxTries) return setTimeout(attempt, intervalMs); return }
+        const target = el.querySelector('[data-scroll-target]') || el
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        this.activeSection = sectionId
       }
-
-      if (targetIdx !== idx) {
-        // prevent native scroll only when we are navigating
-        if (e.cancelable) e.preventDefault();
-        this.isEdgeNavigating = true;
-        this.lastEdgeNavAt = now;
-        this.$router.push(this.routeOrder[targetIdx]).finally(() => {
-          setTimeout(() => {
-            this.isEdgeNavigating = false;
-          }, cooldown);
-        });
+      attempt()
+    },
+    async scrollToSection(sectionId, event) {
+      if (event) {
+        event.preventDefault()
       }
-    }
-  },
-  watch: {
-    $route() {
-      // Tutup menu saat navigasi halaman
       this.mobileOpen = false
       this.socialOpen = false
-      // Scroll to top so the next view starts at the top (below fixed navbar)
-      this.$nextTick(() => {
-        // Use immediate scroll; the content container already has top margin for navbar
-        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-      });
+
+      // Use native hash and a single scroll; rely on CSS offset
+      if (this.$route.path !== '/') {
+        try { await this.$router.push('/') } catch (e) { void 0 }
+      }
+      if (window.location.hash !== `#${sectionId}`) {
+        history.replaceState(history.state, '', `#${sectionId}`)
+      }
+      this._performScroll(sectionId)
+    },
+    updateActiveSection() {
+      const sections = ['home', 'about', 'portfolio', 'contact']
+      const navHeight = 100
+      
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i])
+        if (section) {
+          const rect = section.getBoundingClientRect()
+          if (rect.top <= navHeight && rect.bottom >= navHeight) {
+            this.activeSection = sections[i]
+            break
+          }
+        }
+      }
     }
   },
   mounted() {
-    // Attach edge-only wheel navigation
-    window.addEventListener('wheel', this.onWheelEdgeNavigate, { passive: false });
     // Track viewport width for responsive logo sizing
     this._onResize = () => { this.vw = window.innerWidth }
     window.addEventListener('resize', this._onResize)
+    
+    // Track scroll position to update active section
+    this._onScroll = () => {
+      this.updateActiveSection()
+    }
+    window.addEventListener('scroll', this._onScroll, { passive: true })
+    
     // Initialize theme
     const saved = localStorage.getItem('theme')
     if (saved === 'light' || saved === 'dark') {
@@ -276,16 +345,28 @@ export default {
       this.theme = prefersDark ? 'dark' : 'dark'
     }
     this.applyTheme()
+    
+    // Handle hash navigation on load (single scroll)
+    this.$nextTick(() => {
+      const hash = window.location.hash.substring(1)
+      if (hash) {
+        setTimeout(() => { this._performScroll(hash) }, 300)
+      }
+    })
   },
   beforeUnmount() {
-    window.removeEventListener('wheel', this.onWheelEdgeNavigate);
     window.removeEventListener('resize', this._onResize)
+    window.removeEventListener('scroll', this._onScroll)
   }
 }
 </script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&display=swap');
+html, body, #app {
+  width: 100%;
+  overflow-x: hidden; /* prevent horizontal scroll due to background or 100vw issues */
+}
 *,
 *::before,
 *::after {
@@ -316,7 +397,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 nav {
@@ -329,14 +410,16 @@ nav a {
   transition: color 0.3s;
 }
 
-nav a.router-link-exact-active {
+nav a.router-link-exact-active,
+nav a.active-link {
   display: inline-flex;
   flex-direction: column;
   color: white;
   transition: color 0.3s;
 }
 
-nav a.router-link-exact-active::after {
+nav a.router-link-exact-active::after,
+nav a.active-link::after {
   display: inline-block;
   content: "";
   margin-top: 0.08em;
@@ -346,9 +429,15 @@ nav a.router-link-exact-active::after {
   background-color: #ffdb70;
 }
 
-nav a.router-link-exact-active:hover {
+nav a.router-link-exact-active:hover,
+nav a.active-link:hover {
   color: white;
 }
+
+/* Global anchor offset for fixed navbar */
+html { scroll-padding-top: 100px; }
+@media (max-width: 767px) { html { scroll-padding-top: 220px; } }
+@media (max-width: 639px) { html { scroll-padding-top: 260px; } }
 
 /* Simple fade transition for mobile dropdown */
 .fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
@@ -370,6 +459,13 @@ nav a.router-link-exact-active:hover {
   font-family: 'EB Garamond', serif;
   font-size: 1.5rem;
   font-weight: 600;
+}
+
+/* Brand font: prefer 'Matura MT Script Capitals' if available on the client. */
+.matura-font {
+  font-family: 'Matura MT Script Capitals', 'Segoe Script', 'Brush Script MT', 'Lucida Handwriting', cursive;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <main class="relative">
     <!-- Hero Section -->
-    <section class="relative section-container pt-10 md:pt-16 lg:pt-20 pb-16 md:pb-20 lg:pb-24 min-h-[70vh] flex items-center">
+    <section id="home" class="relative section-container pt-10 md:pt-16 lg:pt-20 pb-16 md:pb-20 lg:pb-24 min-h-[70vh] flex items-center">
       <!-- Background decorations -->
       <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
         <div class="absolute -top-10 -left-10 w-56 h-56 bg-amber-300/10 rounded-full blur-3xl"></div>
@@ -12,7 +12,7 @@
         <!-- Left: Text -->
         <div class="text-center md:text-left order-2 md:order-1">
           <p class="text-amber-700 dark:text-amber-200 tracking-wide fade-in-from-left">Hello World, I'm</p>
-          <h1 class="mt-2 text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white retro-font fadein-up beat-scale">Febrian Sitorus</h1>
+          <h1 class="mt-2 text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white retro-font fadein-up beat-scale">Febrian Pane</h1>
           <div class="py-3">
             <h2 class="typewrite text-lg md:text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-amber-500 dark:from-slate-100 dark:to-yellow-500 fadein-up" ref="typewriter">
               <span class="wrap">{{ txt }}</span>
@@ -28,9 +28,9 @@
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mr-2 w-4 h-4"><path fill-rule="evenodd" d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zm5.845 17.03a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V12a.75.75 0 00-1.5 0v4.19l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3z" clip-rule="evenodd"></path><path d="M14.25 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0016.5 7.5h-1.875a.375.375 0 01-.375-.375V5.25z"></path></svg>
               Download Resume
             </a>
-            <router-link to="/portfolio" class="btn-primary font-semibold">
+            <a href="#portfolio" class="btn-primary font-semibold">
               View Portfolio
-            </router-link>
+            </a>
           </div>
         </div>
 
@@ -128,18 +128,157 @@
         </div>
       </div>
     </section>
+
+    <!-- About Section (component) -->
+    <section id="about" class="section-container py-16">
+      <AboutView />
+    </section>
+
+    <!-- Portfolio Section (inline) -->
+    <section id="portfolio" class="section-container py-16 text-left">
+      <article>
+        <header>
+          <SectionHeader title="Past Project Experience" subtitle="Explore the projects I've worked on so far" />
+        </header>
+        <section>
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-3 2xl:gap-5 fade-zoom-in pb-10">
+            <div v-for="item in portfolioItems" :key="item.id">
+              <div class="item-card glass-card glass-card-hover hover-lift flex flex-col items-center gap-2 rounded-xl md:gap-3 px-5 py-5 lg:px-5 ">
+                <div class="flex items-center justify-center p-0 w-full zoom-in">
+                  <img :alt="`Project ${item.name}`" loading="lazy" decoding="async" class="drop-shadow-xl rounded-xl w-full object-cover" :src="'/img/' + item.imageUrl + '.png'">
+                </div>
+                <div class="w-full flex flex-col gap-2 items-center text-sm md:text-base lg:text-lg">
+                  <div class="title-text font-medium text-slate-900 dark:text-white">{{ item.name }}</div>
+                  <div class="w-full text-left text-[10px] text-slate-700 dark:text-[#c1c1c1] md:text-xs lg:text-sm">{{ item.status }}</div>
+                  <div class="w-full mt-4 text-normal text-sm text-left text-amber-700 dark:text-amber-200">{{ item.tech }}</div>
+                  <div class="w-full flex justify-end">
+                    <div class="flex cursor-pointer items-end gap-3 text-primary">
+                      <a v-if="item.github !== 'null'" :href="item.github" target="_blank" rel="noreferrer" title="View github repository" class="transition-all hover:text-amber-300">
+                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="18" width="18" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                        </svg>
+                      </a>
+                      <a v-if="item.demo !== 'null'" :href="item.demo" target="_blank" rel="noreferrer" title="View finished project" class="transition-all hover:text-amber-300">
+                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                          <polyline points="15 3 21 3 21 9"></polyline>
+                          <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </article>
+    </section>
+
+    
+
+    
+
+    
+
+    <!-- Contact Section (embedded, redesigned) -->
+    <section id="contact" class="section-container py-16 text-left">
+      <div class="grid grid-cols-1 gap-6 lg:gap-8 lg:grid-cols-3">
+        <!-- Left column: Contact form + Social cards -->
+        <div class="lg:col-span-1">
+          <div class="rounded-2xl bg-[#1f1f22]/80 border border-white/10 p-5 md:p-6 shadow-xl">
+            <div class="flex items-start justify-between">
+              <div>
+                <h2 data-scroll-target class="text-2xl md:text-3xl font-extrabold text-amber-300">Hubungi</h2>
+                <p class="mt-1 text-sm text-gray-300">Ada yang ingin didiskusikan? Kirim pesan dan mari bicara.</p>
+              </div>
+            </div>
+
+            <form class="mt-6 space-y-4" @submit.prevent="submitContact">
+              <!-- Alerts -->
+              <div v-if="contactErrors.length" class="rounded-lg border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-3 py-2">
+                <ul class="list-disc list-inside">
+                  <li v-for="(err, idx) in contactErrors" :key="idx">{{ err }}</li>
+                </ul>
+              </div>
+              <div v-if="contactSuccess" class="rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-3 py-2">{{ contactSuccess }}</div>
+
+              <!-- Honeypot (hidden) -->
+              <input v-model="contactBotField" type="text" class="hidden" tabindex="-1" autocomplete="off">
+
+              <input v-model="contactName" type="text" placeholder="Nama Anda" class="w-full rounded-xl bg-[#141416]/80 border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500" required>
+              <input v-model="contactEmail" type="email" placeholder="Email Anda" class="w-full rounded-xl bg-[#141416]/80 border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500" required>
+              <textarea v-model="contactMessage" rows="4" placeholder="Pesan Anda (min. 10 karakter)" class="w-full rounded-xl bg-[#141416]/80 border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500" required></textarea>
+              <button type="submit" :disabled="isSending" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 text-white font-semibold px-4 py-3 hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+                <span v-if="!isSending">Kirim Pesan</span>
+                <span v-else>Mengirim...</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Connect with me removed -->
+        </div>
+
+        <!-- Right column: 
+          panel -->
+        <div class="lg:col-span-2">
+          <div class="rounded-2xl bg-[#1f1f22]/80 border border-white/10 p-5 md:p-6 shadow-xl">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg md:text-xl font-semibold text-white">Comments <span class="text-violet-400">({{ comments.length }})</span></h3>
+            </div>
+
+            <form class="mt-5 space-y-4" @submit.prevent="submitComment">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <input v-model="newCommentName" type="text" placeholder="Name *" class="w-full rounded-xl bg-[#141416]/80 border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500" required>
+                <div class="md:col-span-1">
+                  <label class="block text-xs text-gray-400 mb-1">Profile Photo (optional)</label>
+                  <label class="flex items-center justify-between gap-3 rounded-xl bg-[#141416]/80 border border-dashed border-white/20 px-4 py-2.5 text-sm text-gray-300 hover:border-violet-500 cursor-pointer">
+                    <input type="file" accept="image/*" class="hidden" @change="onPhotoChange">
+                    <span>{{ newCommentPhotoName || 'Choose Profile Photo' }}</span>
+                    <span class="text-xs text-gray-500">Max 5MB</span>
+                  </label>
+                </div>
+              </div>
+              <textarea v-model="newCommentMessage" rows="4" placeholder="Write your message here... *" class="w-full rounded-xl bg-[#141416]/80 border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500" required></textarea>
+              <button type="submit" class="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 text-white font-semibold px-4 py-3 hover:brightness-110">Post Comment</button>
+            </form>
+
+            <div class="mt-6 space-y-4 max-h-[420px] overflow-auto pr-2">
+              <article v-for="c in comments" :key="c.id" class="rounded-xl bg-[#141416]/80 border border-white/10 p-4">
+                <div class="flex items-start justify-between">
+                  <div class="flex items-center gap-3">
+                    <img v-if="c.avatarUrl" :src="c.avatarUrl" alt="avatar" class="w-8 h-8 rounded-full object-cover"/>
+                    <div v-else class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs text-white">{{ c.name.substring(0,1).toUpperCase() }}</div>
+                    <div>
+                      <div class="text-sm font-medium text-white">{{ c.name }}</div>
+                      <div class="text-[11px] text-gray-400">{{ c.date }}</div>
+                    </div>
+                  </div>
+                </div>
+                <p class="mt-3 text-sm text-gray-200">{{ c.message }}</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
   </main>
 </template>
 
 <script>
 import SectionHeader from '@/components/SectionHeader.vue'
 import AvatarVisualizer from '@/components/AvatarVisualizer.vue'
+import AboutView from './AboutView.vue'
+import { supabase } from '@/lib/supabase.js'
+import emailjs from 'emailjs-com'
 export default {
   name: 'HomeView',
-  components: { SectionHeader, AvatarVisualizer },
+  components: { SectionHeader, AvatarVisualizer, AboutView },
   data() {
     return {
-      toRotate: ["Frontend Developer", "Full-stack Web", "Informatics Student", "UI UX Design"],
+      toRotate: ["Frontend Developer", "UI UX Design"],
       period: 2000,
       txt: '',
       loopNum: 0,
@@ -150,7 +289,70 @@ export default {
         { label: 'Cups of Coffee', current: 0, target: 3 },
         { label: 'Commits', current: 0, target: 3 }
       ],
+      // About section data
+      certs: [
+        { id: 1, title: 'Responsive Web Design', issuer: 'Coursera', year: '2024', url: '#', logo: 'https://picsum.photos/seed/coursera/64/64', image: 'https://picsum.photos/id/1015/800/480' },
+        { id: 2, title: 'Foundations of UI/UX', issuer: 'Google', year: '2024', url: '#', logo: 'https://picsum.photos/seed/google/64/64', image: 'https://picsum.photos/id/1016/800/480' },
+        { id: 3, title: 'JavaScript Algorithms', issuer: 'freeCodeCamp', year: '2023', url: '#', logo: 'https://picsum.photos/seed/fcc/64/64', image: 'https://picsum.photos/id/1025/800/480' },
+      ],
+      // Portfolio section data
+      portfolioItems: [
+        {
+          id: 1,
+          name: 'Personal Website',
+          imageUrl: 'portofolio',
+          status: 'My personal website, I created this website to display my profile, skills and projects. As well as my place to try new technology.',
+          tech: 'VueJS 3, Tailwind',
+          github: 'https://github.com/Febrianpane',
+          demo: 'https://github.com/Febrianpane'
+        },
+        {
+          id: 2,
+          name: 'UI UX DESIGN',
+          imageUrl: 'portfolio-uiux',
+          status: 'Design website marketplace ',
+          tech: 'FIGMA',
+          github: 'null',
+          demo: 'https://www.figma.com/design/M0x1q9uDrHNb6x3rDOQD1g/E-Commerce-Website-UI-UX-Design-(ASAKA-PRIMA))?node-id=178-3781&m=dev&t=M6PfU4movWzFyNlA-1'
+        },
+        {
+          id: 3,
+          name: 'COMING SOON ',
+          imageUrl: 'portofolio1',
+          status: ' SEDANG PROSES',
+          tech: 'Codeigniter 4, VUE JS 3',
+          github: 'null',
+          demo: 'null'
+        },
+        {
+          id: 4,
+          name: 'COMING SOON',
+          imageUrl: 'portofolio2',
+          status: 'SEDANG PROSES',
+          tech: 'PROSES',
+          github: 'null',
+          demo: 'null'
+        }
+      ],
+      // Contact form state
+      contactName: '',
+      contactEmail: '',
+      contactMessage: '',
+      // Comments state
+      comments: [],
+      newCommentName: '',
+      newCommentMessage: '',
+      newCommentPhotoFile: null,
+      newCommentPhotoName: '',
+      commentsChannel: null,
+      // EmailJS + validation state
+      isSending: false,
+      contactErrors: [],
+      contactSuccess: null,
+      contactBotField: '' // honeypot
     };
+  },
+  computed: {
   },
   mounted() {
     this.$nextTick(() => {
@@ -168,7 +370,30 @@ export default {
         }, { threshold: 0.3 });
         io.observe(section);
       }
+
+      // IntersectionObserver for reveal animations
+      const ioReveal = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            ioReveal.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      const els = document.querySelectorAll('.reveal, .reveal-up, .reveal-left, .reveal-scale');
+      els.forEach((el) => ioReveal.observe(el));
     });
+    // Init Supabase comments after first render
+    this.initComments()
+  },
+  beforeUnmount() {
+    try {
+      if (this.commentsChannel) {
+        supabase.removeChannel(this.commentsChannel)
+        this.commentsChannel = null
+      }
+    } catch (e) { /* noop */ }
   },
   methods: {
     tick() {
@@ -203,6 +428,176 @@ export default {
       setTimeout(() => {
         that.tick();
       }, delta);
+    },
+    async submitContact() {
+      this.contactErrors = []
+      this.contactSuccess = null
+
+      // Honeypot check
+      if (this.contactBotField) {
+        return
+      }
+
+      // Basic validation
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!this.contactName || this.contactName.length < 2) this.contactErrors.push('Nama minimal 2 karakter')
+      if (!emailRe.test(this.contactEmail)) this.contactErrors.push('Email tidak valid')
+      if (!this.contactMessage || this.contactMessage.length < 10) this.contactErrors.push('Pesan minimal 10 karakter')
+      if (this.contactErrors.length) return
+
+      // Kirim email saja via EmailJS (tanpa menyimpan ke tabel contacts)
+      this.isSending = true
+      try {
+        const payload = {
+          name: this.contactName.trim(),
+          email: this.contactEmail.trim(),
+          message: this.contactMessage.trim()
+        }
+
+        const serviceId = process.env.VUE_APP_EMAILJS_SERVICE_ID
+        const templateId = process.env.VUE_APP_EMAILJS_TEMPLATE_ID
+        const publicKey = process.env.VUE_APP_EMAILJS_PUBLIC_KEY
+        if (!serviceId || !templateId || !publicKey) {
+          throw new Error('Email belum terkonfigurasi. Isi VUE_APP_EMAILJS_* di .env lalu restart server.')
+        }
+
+        await emailjs.send(
+          serviceId,
+          templateId,
+          {
+            // dukung dua gaya variabel
+            from_name: payload.name,
+            from_email: payload.email,
+            name: payload.name,
+            email: payload.email,
+            message: payload.message
+          },
+          publicKey
+        )
+
+        this.contactSuccess = 'Pesan berhasil dikirim!'
+        this.contactName = ''
+        this.contactEmail = ''
+        this.contactMessage = ''
+      } catch (e) {
+        const msg = (e && e.message) ? e.message : 'Gagal mengirim pesan. Coba lagi nanti.'
+        alert(msg)
+        console.error('[contact] submit failed:', e)
+      } finally {
+        this.isSending = false
+      }
+    },
+    onPhotoChange(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Ukuran file maksimal 5MB');
+        return;
+      }
+      this.newCommentPhotoFile = file;
+      this.newCommentPhotoName = file.name;
+    },
+    async initComments() {
+      try {
+        // Initial fetch (approved only)
+        const { data, error } = await supabase
+          .from('comments')
+          .select('*')
+          .eq('approved', true)
+          .order('created_at', { ascending: false })
+          .limit(50)
+        if (error) throw error
+        this.comments = (data || []).map(r => ({
+          id: r.id,
+          name: r.name,
+          message: r.message,
+          avatarUrl: r.photo_url || undefined,
+          date: this.formatDate(r.created_at)
+        }))
+
+        // Realtime subscription for INSERT
+        this.commentsChannel = supabase.channel('comments-realtime')
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments' }, (payload) => {
+            const r = payload.new
+            if (r && r.approved) {
+              this.comments.unshift({
+                id: r.id,
+                name: r.name,
+                message: r.message,
+                avatarUrl: r.photo_url || undefined,
+                date: this.formatDate(r.created_at)
+              })
+            }
+          })
+          .subscribe()
+      } catch (e) {
+        console.warn('[comments] init failed:', e)
+      }
+    },
+    formatDate(iso) {
+      try {
+        const d = new Date(iso)
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      } catch {
+        return ''
+      }
+    },
+    async uploadAvatar(file) {
+      if (!file) return null
+      const path = `avatars/${Date.now()}_${Math.random().toString(36).slice(2)}_${file.name}`
+      try {
+        const { error: upErr } = await supabase.storage.from('avatars').upload(path, file, {
+          cacheControl: '3600',
+          upsert: false,
+          contentType: file.type || 'image/jpeg'
+        })
+        if (upErr) throw upErr
+        const { data } = supabase.storage.from('avatars').getPublicUrl(path)
+        return data?.publicUrl || null
+      } catch (e) {
+        console.warn('[avatars] upload failed, continue without photo:', e)
+        return null
+      }
+    },
+    async submitComment() {
+      // Basic validation to satisfy DB CHECK constraints (e.g., message min length)
+      const name = (this.newCommentName || '').trim()
+      const message = (this.newCommentMessage || '').trim()
+      if (!name || !message) return
+      if (name.length < 2) {
+        alert('Nama minimal 2 karakter')
+        return
+      }
+      if (message.length < 10) {
+        alert('Pesan minimal 10 karakter')
+        return
+      }
+      try {
+        // Optional avatar upload
+        let photoUrl = null
+        if (this.newCommentPhotoFile) {
+          photoUrl = await this.uploadAvatar(this.newCommentPhotoFile)
+        }
+
+        const { error } = await supabase.from('comments').insert({
+          name,
+          message,
+          photo_url: photoUrl,
+          approved: true
+        })
+        if (error) throw error
+
+        // Clear form; realtime will prepend the new comment
+        this.newCommentName = ''
+        this.newCommentMessage = ''
+        this.newCommentPhotoFile = null
+        this.newCommentPhotoName = ''
+      } catch (e) {
+        const msg = (e && e.message) ? e.message : 'Gagal mengirim komentar. Coba lagi nanti.'
+        // Tampilkan pesan error asli dari Supabase jika ada (misal karena RLS atau tabel/kolom tidak ada)
+        alert(msg)
+        console.error('[comments] submit failed:', e)
+      }
     },
     animateCounters() {
       const duration = 1300;
@@ -433,5 +828,522 @@ body {
     0 0 calc(12px + var(--beat) * 48px) rgba(255, 215, 0, calc(0.35 + var(--beat) * 0.55)),
     0 0 calc(6px + var(--beat) * 24px) rgba(34, 197, 94, calc(0.14 + var(--beat) * 0.35));
   transform: translateZ(0) scale(calc(1 + var(--beat) * 0.08));
+}
+
+/* About section styles */
+.reveal {
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.in-view {
+  opacity: 1;
+}
+
+.reveal-up {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 600ms ease forwards;
+}
+
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal-scale.in-view {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(10px, 10px); }
+}
+
+@keyframes float-delay {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-10px, -10px); }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-delay {
+  animation: float-delay 10s ease-in-out infinite;
+}
+
+.animate-ring-soft {
+  animation: ring-pulse 3s ease-in-out infinite;
+}
+
+@keyframes ring-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.1); }
+  50% { box-shadow: 0 0 0 8px rgba(251, 191, 36, 0.2); }
+}
+
+/* Portfolio section styles */
+.item-card:hover {
+  transition: transform 0.3s ease;
+  transform: translateY(-8px);
+}
+
+svg:hover {
+  stroke: #ffdb70;
+}
+
+@keyframes fadeZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fade-zoom-in {
+  animation: fadeZoomIn 1s ease-in-out;
+}
+
+/* Games section styles */
+.btn-base { 
+  padding: 0.5rem 1rem; 
+  font-weight: 600; 
+  transition: all .2s ease; 
+}
+
+.no-scrollbar::-webkit-scrollbar { 
+  display: none; 
+}
+
+.no-scrollbar { 
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
+
+.fade-enter-active, .fade-leave-active { 
+  transition: opacity .15s ease; 
+}
+
+.fade-enter-from, .fade-leave-to { 
+  opacity: 0; 
+}
+
+/* Disable global smooth to avoid double-animations; we use explicit smooth where needed */
+html {
+  scroll-behavior: auto;
+}
+
+/* Section spacing */
+section {
+  scroll-margin-top: 100px;
+}
+@media (max-width: 767px) {
+  section { scroll-margin-top: 120px; }
+}
+@media (max-width: 639px) {
+  section { scroll-margin-top: 144px; }
+}
+
+/* ===== HOLOGRAPHIC PROFILE CARD STYLES ===== */
+.pc-card-wrapper,
+.pc-card-wrapper-small {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --pointer-from-center: 0;
+  --pointer-from-top: 0.5;
+  --pointer-from-left: 0.5;
+  --card-opacity: 0;
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+  --background-x: 50%;
+  --background-y: 50%;
+  --card-radius: 20px;
+  
+  perspective: 500px;
+  transform: translate3d(0, 0, 0.1px);
+  position: relative;
+  touch-action: none;
+}
+
+.pc-card-wrapper {
+  margin: 3rem auto;
+  max-width: 400px;
+}
+
+.pc-card-wrapper-small {
+  width: 100%;
+  max-width: 240px;
+}
+
+.pc-card-wrapper::before,
+.pc-card-wrapper-small::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  background: inherit;
+  background-position: inherit;
+  border-radius: inherit;
+  transition: all 0.5s ease;
+  filter: contrast(1.2) saturate(1.2) blur(20px);
+  transform: scale(0.85) translate3d(0, 0, 0.1px);
+  background-size: 100% 100%;
+  background-image: radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),hsla(45,100%,70%,calc(var(--card-opacity)*0.15)) 4%,hsla(45,80%,60%,calc(var(--card-opacity)*0.1)) 10%,hsla(45,50%,50%,calc(var(--card-opacity)*0.05)) 50%,hsla(45,0%,40%,0) 100%),radial-gradient(35% 52% at 55% 20%,#fbbf2420 0%,#07141f00 100%),radial-gradient(100% 100% at 50% 50%,#f59e0b15 1%,#07141f00 76%),conic-gradient(from 124deg at 50% 50%,#fbbf2425 0%,#f59e0b20 40%,#f59e0b20 60%,#fbbf2425 100%);
+}
+
+.pc-card-wrapper:hover::before,
+.pc-card-wrapper.active::before,
+.pc-card-wrapper-small:hover::before,
+.pc-card-wrapper-small.active::before {
+  filter: contrast(1) saturate(2) blur(40px) opacity(1);
+  transform: scale(0.9) translate3d(0, 0, 0.1px);
+}
+
+.pc-card-wrapper:hover,
+.pc-card-wrapper.active,
+.pc-card-wrapper-small:hover,
+.pc-card-wrapper-small.active {
+  --card-opacity: 1;
+}
+
+.pc-card,
+.pc-card-small {
+  display: grid;
+  aspect-ratio: 0.718;
+  border-radius: var(--card-radius);
+  position: relative;
+  background-blend-mode: color-dodge, normal, normal, normal;
+  box-shadow: rgba(0, 0, 0, 0.3) calc((var(--pointer-from-left) * 4px) - 1px) calc((var(--pointer-from-top) * 8px) - 2px) 10px -2px;
+  transition: transform 1s ease;
+  transform: translate3d(0, 0, 0.1px) rotateX(0deg) rotateY(0deg);
+  background-size: 100% 100%;
+  background-position: 0 0, 0 0, 50% 50%, 0 0;
+  background-image:
+    radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y), hsla(45, 100%, 70%, calc(var(--card-opacity)*0.2)) 4%, hsla(45, 80%, 60%, calc(var(--card-opacity) * 0.15)) 10%, hsla(45, 50%, 50%, calc(var(--card-opacity) * 0.1)) 50%, hsla(45, 0%, 40%, 0) 100%),
+    radial-gradient(35% 52% at 55% 20%, #fbbf2415 0%, #07141f00 100%),
+    radial-gradient(100% 100% at 50% 50%, #f59e0b10 1%, #07141f00 76%),
+    conic-gradient(from 124deg at 50% 50%, #fbbf2420 0%, #f59e0b18 40%, #f59e0b18 60%, #fbbf2420 100%);
+  overflow: hidden;
+}
+
+.pc-card {
+  height: 80svh;
+  max-height: 540px;
+}
+
+.pc-card-small {
+  height: auto;
+  min-height: 280px;
+  max-height: 340px;
+}
+
+.pc-card-small .pc-details {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+.pc-card:hover,
+.pc-card.active,
+.pc-card-small:hover,
+.pc-card-small.active {
+  transition: none;
+  transform: translate3d(0, 0, 0.1px) rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
+}
+
+.pc-card *,
+.pc-card-small * {
+  display: grid;
+  grid-area: 1/-1;
+  border-radius: var(--card-radius);
+  transform: translate3d(0, 0, 0.1px);
+  pointer-events: none;
+}
+
+.pc-inside {
+  inset: 1px;
+  position: absolute;
+  background-image: linear-gradient(145deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.9) 100%);
+  background-color: rgba(0, 0, 0, 0.95);
+  transform: translate3d(0, 0, 0.01px);
+}
+
+.pc-shine {
+  transform: translate3d(0, 0, 1px);
+  overflow: hidden;
+  z-index: 3;
+  mix-blend-mode: color-dodge;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(245, 158, 11, 0.05));
+}
+
+.pc-glare {
+  transform: translate3d(0, 0, 1.1px);
+  overflow: hidden;
+  background-image: radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y), hsl(45, 100%, 75%) 12%, hsla(45, 60%, 40%, 0.15) 90%);
+  mix-blend-mode: overlay;
+  filter: brightness(0.95) contrast(1.05);
+  z-index: 4;
+}
+
+.pc-avatar-content {
+  mix-blend-mode: screen;
+  overflow: hidden;
+}
+
+.pc-avatar-content .avatar {
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scale(1);
+  bottom: 2px;
+  opacity: calc(1.75 - var(--pointer-from-center));
+}
+
+.pc-user-info {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 8px 10px;
+  pointer-events: auto;
+}
+
+.pc-user-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pc-mini-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.pc-mini-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.pc-user-text {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pc-handle {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1;
+}
+
+.pc-status {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1;
+}
+
+.pc-contact-btn {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  background: transparent;
+  pointer-events: auto;
+}
+
+.pc-contact-btn:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.pc-content {
+  max-height: 100%;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+  transform: translate3d(calc(var(--pointer-from-left) * -6px + 3px), calc(var(--pointer-from-top) * -6px + 3px), 0.1px) !important;
+  z-index: 5;
+  mix-blend-mode: luminosity;
+}
+
+.pc-details {
+  width: 100%;
+  position: absolute;
+  top: 2em;
+  display: flex;
+  flex-direction: column;
+}
+
+.pc-details h3 {
+  font-weight: 700;
+  margin: 0;
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  background-image: linear-gradient(to bottom, #ffffff, #fbbf24);
+  background-size: 1em 1.5em;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+}
+
+.pc-details p {
+  font-weight: 600;
+  position: relative;
+  top: -8px;
+  white-space: nowrap;
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  margin: 0 auto;
+  width: min-content;
+  background-image: linear-gradient(to bottom, #fde68a, #f59e0b);
+  background-size: 1em 1.5em;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+@media (max-width: 768px) {
+  .pc-card {
+    height: 70svh;
+    max-height: 450px;
+  }
+  
+  .pc-card-small {
+    min-height: 240px;
+    max-height: 300px;
+    max-width: 200px;
+  }
+  
+  .pc-card-small .pc-details {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  
+  .pc-details h3 {
+    font-size: clamp(1rem, 3.5vw, 1.5rem);
+  }
+  
+  .pc-details p {
+    font-size: clamp(0.6rem, 1.8vw, 0.8rem);
+    top: -6px;
+  }
+  
+  .pc-user-info {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 6px 8px;
+  }
+  
+  .pc-mini-avatar {
+    width: 26px;
+    height: 26px;
+  }
+  
+  .pc-handle {
+    font-size: 10px;
+  }
+  
+  .pc-status {
+    font-size: 9px;
+  }
+  
+  .pc-contact-btn {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pc-card-small {
+    min-height: 200px;
+    max-height: 260px;
+    max-width: 180px;
+  }
+  
+  .pc-card-small .pc-details {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  
+  .pc-details {
+    top: 1.2em;
+  }
+  
+  .pc-details h3 {
+    font-size: clamp(0.9rem, 3vw, 1.2rem);
+  }
+  
+  .pc-details p {
+    font-size: clamp(0.55rem, 1.5vw, 0.7rem);
+    top: -4px;
+  }
+  
+  .pc-user-info {
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    padding: 5px 6px;
+  }
+  
+  .pc-mini-avatar {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .pc-handle {
+    font-size: 9px;
+  }
+  
+  .pc-status {
+    font-size: 8px;
+  }
+  
+  .pc-contact-btn {
+    padding: 4px 8px;
+    font-size: 9px;
+  }
+}
+
+/* End of holographic card styles */
+
+/* Curved Loop Section */
+.curved-loop-section {
+  background: transparent;
+  overflow: visible;
+  margin-top: -10rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 </style>

@@ -18,7 +18,7 @@ export default {
         {
           id: 2,
           name: 'UI UX DESIGN',
-          imageUrl: 'portfolio-uiux',
+          imageUrl: 'portfolio-uiux  aa',
           status: 'Design website marketplace ',
           tech: 'FIGMA',
           github: 'null',
@@ -26,10 +26,10 @@ export default {
         },
         {
           id: 3,
-          name: 'COMING SOON MULU',
+          name: 'COMING SOON',
           imageUrl: 'portofolio1',
-          status: 'MOHON BERSABAR, TEMEN GUA NGOMONG SABARAHA ',
-          tech: 'Codeigniter 3, Bootstrap',
+          status: 'LAGI PROSES!! ',
+          tech: 'Codeigniter 4, VUEJS 3',
           github: 'null',
           demo: 'null'
         },
@@ -37,8 +37,8 @@ export default {
           id: 4,
           name: 'COMING SOON',
           imageUrl: 'portofolio2',
-          status: 'KEPOIN AJA, ORANG BELOM JADI . OKWOKWOKWOKWOK',
-          tech: 'Laravel 8, Bootstrap',
+          status: 'LAGI PROSES JUGAaaaaaa',
+          tech: ' proses',
           github: 'null',
           demo: 'null'
         }

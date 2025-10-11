@@ -4,12 +4,20 @@ export default {
   components: { SectionHeader },
   data() {
     return {
+      // Profile card data
+      profileData: {
+        avatarUrl: '/profile1.png'
+      },
       // Dummy data to render Certificates UI without local files
       certs: [
         { id: 1, title: 'Responsive Web Design', issuer: 'Coursera', year: '2024', url: '#', logo: 'https://picsum.photos/seed/coursera/64/64', image: 'https://picsum.photos/id/1015/800/480' },
         { id: 2, title: 'Foundations of UI/UX', issuer: 'Google', year: '2024', url: '#', logo: 'https://picsum.photos/seed/google/64/64', image: 'https://picsum.photos/id/1016/800/480' },
         { id: 3, title: 'JavaScript Algorithms', issuer: 'freeCodeCamp', year: '2023', url: '#', logo: 'https://picsum.photos/seed/fcc/64/64', image: 'https://picsum.photos/id/1025/800/480' },
       ],
+      // Tilt effect
+      isHovered: false,
+      mouseX: 0,
+      mouseY: 0
     };
   },
   mounted() {
@@ -23,52 +31,91 @@ export default {
       });
     }, { threshold: 0.15 });
 
-    // In Vue 3 with fragment root, this.$el can be a comment node.
-    // Query globally instead of relying on this.$el
     const els = document.querySelectorAll('.reveal, .reveal-up, .reveal-left, .reveal-scale');
     els.forEach((el) => io.observe(el));
-
   },
-  methods: {}
+  methods: {
+    handleContactClick() {
+      window.open('https://id.linkedin.com/in/febrian-sitorus', '_blank');
+    },
+    handleMouseMove(event) {
+      const card = event.currentTarget;
+      const rect = card.getBoundingClientRect();
+      this.mouseX = event.clientX - rect.left;
+      this.mouseY = event.clientY - rect.top;
+    },
+    handleMouseEnter() {
+      this.isHovered = true;
+    },
+    handleMouseLeave() {
+      this.isHovered = false;
+    },
+    getCardTransform() {
+      if (!this.isHovered) return 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+      
+      const card = this.$refs.profileCard;
+      if (!card) return 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+      
+      const rect = card.getBoundingClientRect();
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const deltaX = (this.mouseX - centerX) / centerX;
+      const deltaY = (this.mouseY - centerY) / centerY;
+      
+      const rotateY = deltaX * 10;
+      const rotateX = -deltaY * 10;
+      
+      return `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    }
+  }
 };
 </script>
 <template>
-  <div
-    class="relative overflow-hidden backdrop-blur-sm px-4 sm:px-8 lg:px-10 py-6 md:py-12 text-left border rounded-3xl mx-3 mb-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.12)] bg-white/70 dark:bg-[#1e1e1f]/60 border-black/10 dark:border-white/10">
-    <!-- decorative animated glow -->
-    <div aria-hidden="true" class="pointer-events-none absolute -top-20 -left-24 w-56 h-56 rounded-full bg-amber-300/10 blur-3xl animate-float"></div>
-    <div aria-hidden="true" class="pointer-events-none absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-cyan-300/10 blur-3xl animate-float-delay"></div>
-    <article data-page="about">
-      <header>
-        <SectionHeader title="About Me" subtitle="A brief introduction and what I love to do." align="left" />
-      </header>
-      
-      <section
-        class="text-sm md:text-base flex flex-col gap-5 md:flex-row md:gap-10 md:items-center"
-      >
-        <div class="flex justify-center md:justify-start md:w-5/12 reveal reveal-scale">
-          <img
-            class="w-40 h-40 md:w-56 md:h-56 rounded-2xl object-cover border border-white/10 shadow-xl ring-4 ring-amber-300/10 transition-transform duration-300 hover:scale-[1.03] animate-ring-soft"
-            src="/profile1.png"
-          />
+  <div class="about-container">
+
+    <!-- About description -->
+    <div class="about-description reveal reveal-up">
+      <SectionHeader title="About Me" subtitle="A brief introduction and what I love to do." align="left" />
+      <div class="about-row">
+        <!-- Card (left) -->
+        <div 
+          ref="profileCard"
+          @mouseenter="handleMouseEnter"
+          @mouseleave="handleMouseLeave"
+          @mousemove="handleMouseMove"
+        >
+          <div 
+          class="profile-card"
+          :style="{ transform: getCardTransform() }"
+          >
+            <img class="card-photo-bg" :src="profileData.avatarUrl" alt="" aria-hidden="true" />
+            <div class="grain-overlay"></div>
+            <div class="behind-gradient"></div>
+            <div class="icon-pattern"></div>
+            <div class="card-content">
+              <div class="user-info">
+                <p class="user-title">{{ profileData.title }}</p>
+              </div>
+            </div>
+          <div class="shine-effect" v-if="isHovered"></div>
+          </div>
         </div>
-        <div class="md:w-7/12">
-          <p class="mb-4 md:mb-6 leading-relaxed text-gray-300 reveal reveal-up">
-            Hi everyone! My name is <span class="text-amber-200 font-semibold">Febrian Pane</span>. I'm a web developer who enjoys crafting delightful user experiences. For me, building software is not only a profession but also an art with aesthetic values.
+        <!-- Text (right) -->
+        <div class="description-content">
+          <p class="description-text">
+            Hi everyone! My name is <span class="highlight">Febrian Sitorus</span>. I'm a web developer who enjoys crafting delightful user experiences. For me, building software is not only a profession but also an art with aesthetic values.
           </p>
-          <p class="leading-relaxed text-gray-300 reveal reveal-up" style="animation-delay: 120ms">
+          <p class="description-text">
             My job is to build modern, functional, and user-friendly websites with a personal touch. I aim to convey your message and identity in the most creative way possible. If you're interested in working together, feel free to reach out!
           </p>
         </div>
-      </section>
-    </article>
-  </div>
+      </div>
+    </div>
 
-  
-
-  <!-- Quick Facts section -->
-  <div class="px-4 sm:px-8 lg:px-10 mt-6 md:mt-10">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+    <!-- Quick Facts section -->
+    <div class="mt-10">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
       <div class="glass-card glass-card-hover p-4 flex items-center gap-3 reveal reveal-scale" style="animation-delay: 40ms">
         <div class="w-10 h-10 rounded-lg bg-amber-300/15 text-amber-200 flex items-center justify-center">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l4 8 8 1-6 6 1 9-7-4-7 4 1-9-6-6 8-1 4-8z"/></svg>
@@ -106,10 +153,10 @@ export default {
         </div>
       </div>
     </div>
-  </div>
+    </div>
 
-  <!-- Certificates (own layout) -->
-  <section class="px-4 sm:px-8 lg:px-10 mt-10">
+    <!-- Certificates (own layout) -->
+    <section class="mt-10">
     <SectionHeader title="Certificates" subtitle="Proof of skills and achievements" align="left" />
     <!-- Cards grid -->
     <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -136,50 +183,432 @@ export default {
 
     <!-- Spacer for bottom breathing room -->
     <div class="mt-8 h-8 md:h-12"></div>
-  </section>
+    </section>
+  </div>
+</template>
 
-  
-  
-  
-  </template>
+<style scoped>
+/* Container */
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
 
-<style>
-.fadein-left {
+/* Profile Card Wrapper */
+.profile-card-wrapper {
+  perspective: 1000px;
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Profile Card */
+.profile-card {
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* enlarged card */
+  aspect-ratio: 3/4;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-radius: 24px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.profile-card:hover {
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+    0 0 40px rgba(59, 130, 246, 0.3);
+}
+
+/* Background photo element inside card */
+.card-photo-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 18%; /* keep face in upper third */
+  transform: none;          /* fill card fully */
+  transform-origin: 50% 50%;
+  filter: brightness(0.82) contrast(1.05);
+  z-index: 0;
+}
+
+/* Grain Overlay */
+.grain-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Behind Gradient */
+.behind-gradient {
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(circle at 30% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.2) 0%, transparent 50%);
+  animation: gradientShift 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes gradientShift {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(10px, 10px) rotate(5deg); }
+}
+
+/* Icon Pattern */
+.icon-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Card Content */
+.card-content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.5rem 2rem;
+  z-index: 1;
+}
+
+/* Avatar Section */
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 160px;
+  height: 160px;
+}
+
+.avatar-glow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: avatarGlow 3s ease-in-out infinite;
+  filter: blur(20px);
+}
+
+@keyframes avatarGlow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+.avatar-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid rgba(59, 130, 246, 0.5);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.avatar-ring {
+  position: absolute;
+  inset: -8px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: ringRotate 4s linear infinite;
+}
+
+@keyframes ringRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Status Badge */
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+.status-online {
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+.status-text {
+  font-size: 0.875rem;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+/* User Info */
+.user-info {
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.user-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.user-title {
+  font-size: 1rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.user-handle {
+  font-size: 0.875rem;
+  color: #3b82f6;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Contact Button */
+.contact-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
   opacity: 0;
-  animation: fadeInLeft 0.5s ease-out forwards;
+  transition: opacity 0.3s ease;
 }
 
-@keyframes fadeInLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(100%);
+.contact-button:hover::before {
+  opacity: 1;
+}
+
+.contact-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+.contact-button:active {
+  transform: translateY(0);
+}
+
+.button-text,
+.button-icon {
+  position: relative;
+  z-index: 1;
+}
+
+.button-icon {
+  transition: transform 0.3s ease;
+}
+
+.contact-button:hover .button-icon {
+  transform: translateX(4px);
+}
+
+/* Decorative Dots */
+.decorative-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.5);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+/* Shine Effect */
+.shine-effect {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  animation: shine 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+}
+
+/* About Description */
+.about-description {
+  max-width: 1200px; /* widen section left-right */
+  margin: 0 auto;
+  padding: 2rem 2.5rem; /* add a bit more horizontal padding */
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: left;
+}
+
+/* Row layout: card left, text right */
+.about-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .about-row {
+    grid-template-columns: 240px 2fr; /* larger photo card left, flexible text right */
+    gap: 2rem;
   }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  .about-description .profile-card-wrapper { justify-content: start; }
+  .about-description .profile-card { max-width: 100%; }
+  .about-description .description-content { margin-top: 0; }
+  .avatar-wrapper { width: 180px; height: 180px; }
 }
 
-.fadeins-1 {
-  animation-delay: 500ms;
+.description-content {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.fadeins-2 {
-  animation-delay: 800ms;
+.description-text {
+  color: #cbd5e1;
+  line-height: 1.8;
+  font-size: 1rem;
 }
 
-/* Reveal on mount with slight stagger */
+.highlight {
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+/* Reveal Animations */
+.reveal {
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.in-view {
+  opacity: 1;
+}
+
+.reveal-scale {
+  transform: scale(0.95);
+}
+
+.reveal-scale.in-view {
+  transform: scale(1);
+}
+
 .reveal-up {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(20px);
   animation: fadeUp 600ms ease forwards;
 }
 
 @keyframes fadeUp {
-  0% { opacity: 0; transform: translateY(12px); }
+  0% { opacity: 0; transform: translateY(20px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* cleaned unused skills/certificates and modal styles */
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-card {
+    max-width: 420px; /* larger on mobile too */
+  }
+  
+  .avatar-wrapper {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .user-name {
+    font-size: 1.5rem;
+  }
+  
+  .card-content {
+    padding: 2rem 1.5rem;
+  }
+}
 </style>
