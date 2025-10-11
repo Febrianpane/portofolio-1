@@ -8,7 +8,7 @@
     v-if="showIntro"
     title="Febrian Pane"
     tagline="Frontend Developer • UI/UX"
-    :duration-ms="3000"
+    :duration-ms="3100"
     @done="showIntro=false"
   />
   <GalaxyBackground
