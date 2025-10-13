@@ -18,4 +18,4 @@ if (!url || !anon) {
   console.warn('[supabase] Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY. Set them in your .env file.')
 }
 
-export const supabase = createClient(url || '', anon || '')
+export const supabase = (url && anon) ? createClient(url, anon) : null as any
