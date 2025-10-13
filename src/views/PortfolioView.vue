@@ -18,7 +18,7 @@ export default {
         {
           id: 2,
           name: 'UI UX DESIGN',
-          imageUrl: 'portfolio-uiux  aa',
+          imageUrl: 'portfolio-uiux',
           status: 'Design website marketplace ',
           tech: 'FIGMA',
           github: 'null',

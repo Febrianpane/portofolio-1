@@ -21,9 +21,9 @@ export default {
       mouse: { x: -9999, y: -9999, vx: 0, vy: 0, t: 0 },
       reduce: false,
       // performance tuning
-      quality: 'medium', // 'high' | 'medium' | 'low'
-      maxParticles: 90,
-      maxSparkles: 50,
+      quality: 'high', // 'high' | 'medium' | 'low'
+      maxParticles: 160,
+      maxSparkles: 120,
       lastLoopTime: performance.now(),
       fpsAccumulator: 0,
       fpsFrames: 0,
@@ -93,7 +93,7 @@ export default {
       const now = performance.now()
       // throttle emissions to avoid overly fast trails
       if (!this.mouse.lastEmit) this.mouse.lastEmit = 0
-      const emitCooldown = this.quality === 'high' ? 36 : this.quality === 'medium' ? 44 : 62 // ms
+      const emitCooldown = this.quality === 'high' ? 20 : this.quality === 'medium' ? 28 : 44
       if (now - this.mouse.lastEmit < emitCooldown) return
       const dx = e.clientX - this.mouse.x
       const dy = e.clientY - this.mouse.y
@@ -116,35 +116,35 @@ export default {
       // In reduced-motion, keep emission minimal instead of disabling
       const reducedMode = this.reduce === true
       let base = 0
-      if (this.quality === 'high') base = 1.0 + (speed || 0) * 0.03
-      else if (this.quality === 'medium') base = 0.8 + (speed || 0) * 0.025
-      else base = 0.6 + (speed || 0) * 0.02
+      if (this.quality === 'high') base = 1.4 + (speed || 0) * 0.05
+      else if (this.quality === 'medium') base = 1.1 + (speed || 0) * 0.035
+      else base = 0.8 + (speed || 0) * 0.028
       if (reducedMode) base *= 0.3
-      const count = Math.min(this.quality === 'high' ? 2 : this.quality === 'medium' ? 2 : 1, base)
+      const count = Math.min(this.quality === 'high' ? 3 : this.quality === 'medium' ? 2 : 2, base)
       for (let i = 0; i < count; i++) {
         // Dust particle
         const a = Math.random() * Math.PI * 2
-        const r = (Math.random() * 0.7 + 0.25) * (this.isDark ? 1.3 : 1.6)
+        const r = (Math.random() * 0.9 + 0.35) * (this.isDark ? 1.5 : 1.8)
         this.particles.push({
           x, y,
           vx: Math.cos(a) * r,
           vy: Math.sin(a) * r - 0.45,
           life: 1,
-          decay: 0.03 + Math.random() * 0.03,
-          size: (this.quality === 'low' ? 0.9 : 1.2) + Math.random() * 0.9,
+          decay: 0.028 + Math.random() * 0.028,
+          size: (this.quality === 'low' ? 1.0 : 1.4) + Math.random() * 1.2,
           hue: this.isDark ? 45 : 30,
         })
         // Sparkle
-        if (Math.random() < (reducedMode ? 0.06 : (this.quality === 'high' ? 0.18 : this.quality === 'medium' ? 0.14 : 0.1))) {
+        if (Math.random() < (reducedMode ? 0.12 : (this.quality === 'high' ? 0.28 : this.quality === 'medium' ? 0.2 : 0.14))) {
           const angle = Math.random() * Math.PI * 2
-          const spd = (this.quality === 'low' ? 0.6 : 0.9) + Math.random() * 0.7
+          const spd = (this.quality === 'low' ? 0.7 : 1.0) + Math.random() * 0.9
           this.sparkles.push({
             x, y,
             vx: Math.cos(angle) * spd,
             vy: Math.sin(angle) * spd,
             life: 1,
-            decay: 0.045 + Math.random() * 0.035,
-            size: (this.quality === 'low' ? 0.65 : 0.85) + Math.random() * 0.8,
+            decay: 0.04 + Math.random() * 0.035,
+            size: (this.quality === 'low' ? 0.85 : 1.05) + Math.random() * 1.0,
             hue: (this.baseHue + Math.random() * 60) % 360,
           })
         }

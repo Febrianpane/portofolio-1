@@ -181,7 +181,7 @@
       <div class="flex flex-col items-end space-y-2 mb-2 transition duration-200 ease-out origin-bottom-right opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100"
            :class="socialOpen ? 'opacity-100 scale-100' : ''">
         <!-- LinkedIn -->
-        <a href="https://id.linkedin.com/in/febrian-sitorus" target="_blank" rel="noopener" aria-label="Open LinkedIn"
+        <a href="https://id.linkedin.com/in/" target="_blank" rel="noopener" aria-label="Open LinkedIn"
            class="inline-flex items-center">
           <span class="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full bg-[#1e1e1e]/90 border border-white/10 hover:bg-[#2a2a2a] shadow">
             <img class="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/600px-LinkedIn_logo_initials.png" alt="LinkedIn" />

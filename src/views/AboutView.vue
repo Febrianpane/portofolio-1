@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     handleContactClick() {
-      window.open('https://id.linkedin.com/in/febrian-sitorus', '_blank');
+      window.open('https://id.linkedin.com/in/', '_blank');
     },
     handleMouseMove(event) {
       const card = event.currentTarget;
@@ -104,7 +104,7 @@ export default {
         <!-- Text (right) -->
         <div class="description-content">
           <p class="description-text shiny-text">
-            Hi everyone! My name is <span class="highlight">Febrian Sitorus</span>. I'm a web developer who enjoys crafting delightful user experiences. For me, building software is not only a profession but also an art with aesthetic values.
+            Hi everyone! My name is <span class="highlight">Febrian Pane</span>. I'm a web developer who enjoys crafting delightful user experiences. For me, building software is not only a profession but also an art with aesthetic values.
           </p>
           <p class="description-text shiny-text">
             My job is to build modern, functional, and user-friendly websites with a personal touch. I aim to convey your message and identity in the most creative way possible. If you're interested in working together, feel free to reach out!

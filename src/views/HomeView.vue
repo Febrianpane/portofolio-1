@@ -142,7 +142,7 @@
               <span class="text-gray-200">{{ f }}</span>
             </li>
           </ul>
-          <a :href="plan.ctaHref" target="_blank" rel="noopener" class="mt-5 inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold bg-gradient-to-r from-rose-700 via-red-600 to-red-800 text-white hover:brightness-110">
+          <a :href="whatsAppLink(plan)" target="_blank" rel="noopener" class="mt-5 inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold bg-gradient-to-r from-rose-700 via-red-600 to-red-800 text-white hover:brightness-110">
             {{ plan.ctaText }}
           </a>
         </article>
@@ -321,7 +321,7 @@ export default {
             'Deploy & konfigurasi domain'
           ],
           ctaText: 'Start Starter',
-          ctaHref: 'https://wa.me/6280000000000'
+          ctaHref: 'https://wa.me/6289630399769?text=Halo%2C%20saya%20ingin%20ambil%20paket%20Starter%20%2479.%20Boleh%20dibantu%20timeline%20dan%20kebutuhannya%3F'
         },
         {
           id: 'standard',
@@ -336,7 +336,7 @@ export default {
           ],
           featured: true,
           ctaText: 'Choose Standard',
-          ctaHref: 'https://wa.me/6280000000000'
+          ctaHref: 'https://wa.me/6289630399769?text=Halo%2C%20saya%20tertarik%20paket%20Standard%20%24199%20(Recommended).%20Mohon%20detail%20fitur%20dan%20estimasi%20waktu%2C%20ya.'  
         },
         {
           id: 'pro',
@@ -350,7 +350,7 @@ export default {
             'CI/CD & dokumentasi singkat'
           ],
           ctaText: 'Go Pro',
-          ctaHref: 'https://wa.me/6280000000000'
+          ctaHref: 'https://wa.me/6289630399769?text=Halo%2C%20saya%20ingin%20diskusi%20paket%20Pro%20%24499%20untuk%20fitur%20khusus.%20Bisa%20set%20jadwal%20call%3F'
         }
       ],
       // About section data
@@ -381,19 +381,19 @@ export default {
         },
         {
           id: 3,
-          name: 'COMING SOON ',
-          imageUrl: 'portofolio1',
-          status: ' SEDANG PROSES',
-          tech: 'Codeigniter 4, VUE JS 3',
+          name: 'AsakaPrima ',
+          imageUrl: 'portofolio2',
+          status: ' Landing Page E-commerce  ',
+          tech: 'VueJS 3, tailwindcss',
           github: 'null',
-          demo: 'null'
+          demo: 'https://asakaprima.netlify.app/'
         },
         {
           id: 4,
-          name: 'COMING SOON',
-          imageUrl: 'portofolio2',
+          name: 'Marketplace',
+          imageUrl: 'portofolio1',
           status: 'SEDANG PROSES',
-          tech: 'PROSES',
+          tech: 'codeigniter 4, vuejs 3, tailwindcss, php, mysql,',
           github: 'null',
           demo: 'null'
         }
@@ -437,8 +437,12 @@ export default {
       const els = document.querySelectorAll('.reveal, .reveal-up, .reveal-left, .reveal-scale');
       els.forEach((el) => ioReveal.observe(el));
     });
-    // Init Supabase comments after first render
-    this.initComments()
+    // Init Supabase comments after first render (only if env available)
+    if (supabase) {
+      this.initComments()
+    } else {
+      console.warn('[comments] Supabase not configured; skipping comments init')
+    }
   },
   beforeUnmount() {
     try {
@@ -449,6 +453,16 @@ export default {
     } catch (e) { /* noop */ }
   },
   methods: {
+    whatsAppLink(plan) {
+      try {
+        const phone = '6289630399769'
+        const text = `Halo, saya tertarik paket ${plan.title} — ${plan.price}. Mohon detail fitur dan estimasi waktu.`
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
+        return url
+      } catch {
+        return plan.ctaHref || '#'
+      }
+    },
     tick() {
       let typewriter = this.$refs.typewriter;
 
@@ -551,6 +565,7 @@ export default {
       this.newCommentPhotoName = file.name;
     },
     async initComments() {
+      if (!supabase) return
       try {
         // Initial fetch (approved only)
         const { data, error } = await supabase
@@ -597,13 +612,17 @@ export default {
       }
     },
     async uploadAvatar(file) {
+      if (!supabase) {
+        alert('Upload avatar nonaktif: konfigurasi Supabase belum tersedia.');
+        return null
+      }
       if (!file) return null
       const path = `avatars/${Date.now()}_${Math.random().toString(36).slice(2)}_${file.name}`
       try {
         const { error: upErr } = await supabase.storage.from('avatars').upload(path, file, {
           cacheControl: '3600',
           upsert: false,
-          contentType: file.type || 'image/jpeg'
+          contentType: file.type || 'image/jpeg/jpg'
         })
         if (upErr) throw upErr
         const { data } = supabase.storage.from('avatars').getPublicUrl(path)
@@ -628,6 +647,10 @@ export default {
       if (idx !== -1) this.newCommentIds.splice(idx, 1)
     },
     async submitComment() {
+      if (!supabase) {
+        alert('Komentar sementara nonaktif: konfigurasi Supabase belum tersedia.');
+        return
+      }
       // Basic validation to satisfy DB CHECK constraints (e.g., message min length)
       const name = (this.newCommentName || '').trim()
       const message = (this.newCommentMessage || '').trim()
