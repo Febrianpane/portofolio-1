@@ -118,14 +118,34 @@
       </div>
     </section>
 
-    <!-- Featured Metrics (Animated Counters) -->
-    <section class="section-container py-16" ref="metricsSection">
-      <SectionHeader title="Featured Metrics" />
-      <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-        <div v-for="m in metrics" :key="m.label" class="glass-card p-6 text-center">
-          <div class="text-3xl md:text-4xl font-extrabold text-amber-300">{{ m.current }}</div>
-          <div class="text-slate-700 dark:text-gray-300 text-xs md:text-sm mt-1">{{ m.label }}</div>
-        </div>
+    <!-- Pricing / Packages -->
+    <section class="section-container py-16">
+      <SectionHeader title="Pricing" subtitle="Choose a package that fits your project" />
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
+        <article
+          v-for="plan in pricingPlans"
+          :key="plan.id"
+          :class="['rounded-xl p-5 glass-card hover-lift glass-card-hover flex flex-col', plan.featured ? 'ring-1 ring-red-500/40' : '']"
+        >
+          <div class="flex items-center justify-between">
+            <h3 class="text-white font-semibold text-lg">{{ plan.title }}</h3>
+            <span v-if="plan.featured" class="text-[10px] px-2 py-0.5 rounded-full bg-red-600/30 text-red-200 border border-red-500/40">Recommended</span>
+          </div>
+          <div class="mt-2 flex items-end gap-1">
+            <div class="text-3xl font-extrabold text-amber-300">{{ plan.price }}</div>
+            <div class="text-xs text-gray-400 mb-1">/project</div>
+          </div>
+          <p class="mt-2 text-sm text-gray-300">{{ plan.description }}</p>
+          <ul class="mt-4 space-y-2 text-sm flex-1">
+            <li v-for="(f, idx) in plan.features" :key="idx" class="flex items-start gap-2">
+              <svg class="mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+              <span class="text-gray-200">{{ f }}</span>
+            </li>
+          </ul>
+          <a :href="plan.ctaHref" target="_blank" rel="noopener" class="mt-5 inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold bg-gradient-to-r from-rose-700 via-red-600 to-red-800 text-white hover:brightness-110">
+            {{ plan.ctaText }}
+          </a>
+        </article>
       </div>
     </section>
 
@@ -186,7 +206,7 @@
       <div class="grid grid-cols-1 gap-6 lg:gap-8 lg:grid-cols-3">
         <!-- Left column: Contact form + Social cards -->
         <div class="lg:col-span-1">
-          <div class="rounded-2xl bg-[#1f1f22]/80 border border-white/10 p-5 md:p-6 shadow-xl">
+          <div class="rounded-2xl bg-[#1f1f22]/80 border border-white/10 p-5 md:p-6 shadow-xl star-border">
             <div class="flex items-start justify-between">
               <div>
                 <h2 data-scroll-target class="text-2xl md:text-3xl font-extrabold text-amber-300">Hubungi</h2>
@@ -223,7 +243,7 @@
         <!-- Right column: 
           panel -->
         <div class="lg:col-span-2">
-          <div class="rounded-2xl bg-[#1f1f22]/80 border border-white/10 p-5 md:p-6 shadow-xl">
+          <div class="rounded-2xl bg-[#1f1f22]/80 border border-white/10 p-5 md:p-6 shadow-xl star-border">
             <div class="flex items-center justify-between">
               <h3 class="text-lg md:text-xl font-semibold text-white">Comments <span class="text-violet-400">({{ comments.length }})</span></h3>
             </div>
@@ -241,24 +261,28 @@
                 </div>
               </div>
               <textarea v-model="newCommentMessage" rows="4" placeholder="Write your message here... *" class="w-full rounded-xl bg-[#141416]/80 border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500" required></textarea>
-              <button type="submit" class="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 text-white font-semibold px-4 py-3 hover:brightness-110">Post Comment</button>
+              <button type="submit" class="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-rose-700 via-red-600 to-red-800 text-white font-semibold px-4 py-3 hover:brightness-110">Post Comment</button>
             </form>
 
-            <div class="mt-6 space-y-4 max-h-[420px] overflow-auto pr-2">
-              <article v-for="c in comments" :key="c.id" class="rounded-xl bg-[#141416]/80 border border-white/10 p-4">
-                <div class="flex items-start justify-between">
+            <transition-group tag="div" name="comment-list" class="mt-6 space-y-4 max-h-[420px] overflow-auto pr-2">
+              <article
+                v-for="c in comments"
+                :key="c.id"
+                :class="['rounded-xl border p-4 comment-card', isNewComment(c.id) ? 'is-new' : '']"
+              >
+                <div class="flex items-start justify-between min-w-0">
                   <div class="flex items-center gap-3">
                     <img v-if="c.avatarUrl" :src="c.avatarUrl" alt="avatar" class="w-8 h-8 rounded-full object-cover"/>
                     <div v-else class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs text-white">{{ c.name.substring(0,1).toUpperCase() }}</div>
                     <div>
-                      <div class="text-sm font-medium text-white">{{ c.name }}</div>
+                      <div class="text-sm font-medium text-white break-words">{{ c.name }}</div>
                       <div class="text-[11px] text-gray-400">{{ c.date }}</div>
                     </div>
                   </div>
                 </div>
-                <p class="mt-3 text-sm text-gray-200">{{ c.message }}</p>
+                <p class="mt-3 text-sm text-gray-200 break-words whitespace-pre-wrap max-w-full">{{ c.message }}</p>
               </article>
-            </div>
+            </transition-group>
           </div>
         </div>
       </div>
@@ -283,11 +307,51 @@ export default {
       txt: '',
       loopNum: 0,
       isDeleting: false,
-      metrics: [
-        { label: 'Projects', current: 0, target: 3 },
-        { label: 'Happy Clients', current: 0, target: 3 },
-        { label: 'Cups of Coffee', current: 0, target: 3 },
-        { label: 'Commits', current: 0, target: 3 }
+      // Pricing plans
+      pricingPlans: [
+        {
+          id: 'starter',
+          title: 'Starter',
+          price: '$79',
+          description: 'Ideal untuk landing sederhana atau MVP kecil.',
+          features: [
+            '1 landing page responsif',
+            'Implementasi desain dasar',
+            'Optimasi dasar performance',
+            'Deploy & konfigurasi domain'
+          ],
+          ctaText: 'Start Starter',
+          ctaHref: 'https://wa.me/6280000000000'
+        },
+        {
+          id: 'standard',
+          title: 'Standard',
+          price: '$199',
+          description: 'Cocok untuk website multi-halaman dengan integrasi sederhana.',
+          features: [
+            '3–5 halaman (Home, About, Portfolio, Contact)',
+            'Integrasi API dasar (email/DB)',
+            'Aksesibilitas & SEO lebih baik',
+            'Analytics & form contact'
+          ],
+          featured: true,
+          ctaText: 'Choose Standard',
+          ctaHref: 'https://wa.me/6280000000000'
+        },
+        {
+          id: 'pro',
+          title: 'Pro',
+          price: '$499',
+          description: 'Untuk produk lebih kompleks dan siap scale.',
+          features: [
+            '6+ halaman / fitur khusus',
+            'Integrasi auth / DB (Supabase)',
+            'Audit Core Web Vitals 90+',
+            'CI/CD & dokumentasi singkat'
+          ],
+          ctaText: 'Go Pro',
+          ctaHref: 'https://wa.me/6280000000000'
+        }
       ],
       // About section data
       certs: [
@@ -345,6 +409,7 @@ export default {
       newCommentPhotoFile: null,
       newCommentPhotoName: '',
       commentsChannel: null,
+      newCommentIds: [],
       // EmailJS + validation state
       isSending: false,
       contactErrors: [],
@@ -357,19 +422,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.tick();
-      // Animate metrics when section is visible
-      const section = this.$refs.metricsSection;
-      if (section) {
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              this.animateCounters();
-              io.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.3 });
-        io.observe(section);
-      }
+      // Pricing is static; no fetch needed
 
       // IntersectionObserver for reveal animations
       const ioReveal = new IntersectionObserver((entries) => {
@@ -527,6 +580,7 @@ export default {
                 avatarUrl: r.photo_url || undefined,
                 date: this.formatDate(r.created_at)
               })
+              this.markNew(r.id)
             }
           })
           .subscribe()
@@ -558,6 +612,20 @@ export default {
         console.warn('[avatars] upload failed, continue without photo:', e)
         return null
       }
+    },
+    isNewComment(id) {
+      return this.newCommentIds.includes(id)
+    },
+    markNew(id) {
+      if (!id) return
+      if (!this.newCommentIds.includes(id)) {
+        this.newCommentIds.push(id)
+        setTimeout(() => this.unmarkNew(id), 2600)
+      }
+    },
+    unmarkNew(id) {
+      const idx = this.newCommentIds.indexOf(id)
+      if (idx !== -1) this.newCommentIds.splice(idx, 1)
     },
     async submitComment() {
       // Basic validation to satisfy DB CHECK constraints (e.g., message min length)
@@ -599,24 +667,26 @@ export default {
         console.error('[comments] submit failed:', e)
       }
     },
-    animateCounters() {
-      const duration = 1300;
-      const start = performance.now();
-      const startValues = this.metrics.map(m => m.current);
-      const deltas = this.metrics.map(m => m.target - m.current);
-      const step = (now) => {
-        const t = Math.min(1, (now - start) / duration);
-        const eased = this.easeOutCubic(t);
-        this.metrics = this.metrics.map((m, i) => ({
-          ...m,
-          current: Math.round(startValues[i] + deltas[i] * eased)
-        }));
-        if (t < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    },
-    easeOutCubic(t) {
-      return 1 - Math.pow(1 - t, 3);
+    data() {
+      return {
+        pricingPlans: [
+          {
+            title: 'Personal',
+            price: '$9.99',
+            features: ['1GB Storage', '2GB Bandwidth', '10 Users']
+          },
+          {
+            title: 'Business',
+            price: '$19.99',
+            features: ['5GB Storage', '10GB Bandwidth', '50 Users']
+          },
+          {
+            title: 'Enterprise',
+            price: '$49.99',
+            features: ['20GB Storage', '50GB Bandwidth', '200 Users']
+          }
+        ]
+      }
     }
   }
 }
@@ -1336,14 +1406,113 @@ section {
   }
 }
 
-/* End of holographic card styles */
-
-/* Curved Loop Section */
 .curved-loop-section {
   background: transparent;
   overflow: visible;
   margin-top: -10rem;
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.comment-list-enter-active,
+.comment-list-leave-active,
+.comment-list-move {
+  transition: all .35s cubic-bezier(.22,1,.36,1);
+}
+.comment-list-enter-from,
+.comment-list-leave-to {
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+}
+.comment-card {
+  position: relative;
+  background: rgba(20, 20, 22, 0.8);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+  will-change: transform, box-shadow;
+}
+.comment-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06) inset;
+  border-color: rgba(255,255,255,0.14);
+}
+.comment-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 0.75rem;
+  background: conic-gradient(from 140deg, #7c3aed33, #06b6d433, #f59e0b33, #ec489933, #7c3aed33);
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity .35s ease;
+  z-index: -1;
+}
+.comment-card:hover::before { opacity: .9; }
+
+.comment-card.is-new {
+  animation: commentGlow 1.6s ease-in-out 0s 1, sheen 2.2s ease-out 0s 1;
+  border-color: rgba(245, 158, 11, 0.45);
+  background: linear-gradient(180deg, rgba(251, 191, 36, 0.06), rgba(20, 20, 22, 0.8));
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2) inset, 0 10px 28px rgba(0,0,0,0.45);
+}
+/* force wrap long words/URLs inside comment cards */
+.comment-card {
+  overflow: hidden;
+}
+.comment-card p,
+.comment-card .text-sm,
+.comment-card .text-xs {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+@keyframes commentGlow {
+  0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  60% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+@keyframes sheen {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.star-border {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+}
+.star-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    #7f1d1d, /* red-900 */
+    #991b1b, /* red-800 */
+    #dc2626, /* red-600 */
+    #ef4444, /* red-500 */
+    #b91c1c, /* red-700 */
+    #7f1d1d
+  );
+  padding: 1px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: star-movement-bottom linear infinite alternate;
+  opacity: 0.75;
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.35);
+  z-index: -1;
+  will-change: transform;
+}
+.star-border::after { display: none; }
+@keyframes sb-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes sb-twinkle {
+  0%, 100% { opacity: .25; transform: scale(1); }
+  50% { opacity: .55; transform: scale(1.02); }
 }
 </style>

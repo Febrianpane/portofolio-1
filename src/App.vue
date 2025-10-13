@@ -19,7 +19,7 @@
     :showerBurst="2"
     :angleBaseDeg="65"
     :angleSpreadDeg="35"
-    :trailPreset="theme === 'dark' ? 'amber' : 'rainbow'"
+    :trailPreset="theme === 'dark' ? 'violet' : 'rainbow'"
     :trailWidth="1"
     :starDensityDivisor="18000"
     :maxStars="160"
@@ -38,14 +38,14 @@
               :speed="0.5"
               :enable-shadows="true"
               :enable-on-hover="true"
-              class-name="matura-font !text-[1.25rem] !font-semibold !mx-0 max-w-full truncate leading-none"
-              :class="theme === 'dark' ? '!text-amber-200' : '!text-slate-900'"
+              class-name="matura-font brand-shiny !text-[1.2rem] !font-semibold !mx-0 max-w-full truncate leading-none"
+              :class="theme === 'dark' ? '!text-red-300' : '!text-slate-900'"
             />
           </button>
           
           <div class="flex items-center gap-3">
             <!-- Theme toggle -->
-            <button @click="toggleTheme" class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-300 hover:text-white hover:bg-[#1e1e1e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ffdb70] focus:ring-offset-transparent" aria-label="Toggle theme">
+            <button @click="toggleTheme" class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-300 hover:text-white hover:bg-[#1e1e1e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 focus:ring-offset-transparent" aria-label="Toggle theme">
               <svg v-if="theme==='dark'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 0 1-10.45-10.5 1 1 0 0 0-.11-1A1 1 0 0 0 8 1a10 10 0 1 0 11.31 11.31 1 1 0 0 0 .33-.76Z"/>
               </svg>
@@ -54,7 +54,7 @@
               </svg>
             </button>
             <!-- Hamburger -->
-            <button @click="mobileOpen = !mobileOpen" class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-300 hover:text-white hover:bg-[#1e1e1e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ffdb70] focus:ring-offset-transparent" :aria-expanded="mobileOpen.toString()" aria-label="Toggle navigation">
+            <button @click="mobileOpen = !mobileOpen" class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-300 hover:text-white hover:bg-[#1e1e1e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 focus:ring-offset-transparent" :aria-expanded="mobileOpen.toString()" aria-label="Toggle navigation">
               <svg v-if="!mobileOpen" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
@@ -90,8 +90,8 @@
                 :speed="0.5"
                 :enable-shadows="true"
                 :enable-on-hover="true"
-                class-name="matura-font !text-[1.375rem] !font-semibold !mx-0 leading-none"
-                :class="theme === 'dark' ? '!text-amber-200' : '!text-slate-900'"
+                class-name="matura-font brand-shiny !text-[2rem] !font-semibold !mx-0 leading-none"
+                :class="theme === 'dark' ? '!text-red-300' : '!text-slate-900'"
               />
             </button>
           </div>
@@ -207,7 +207,7 @@
 
       <!-- Main FAB toggle (mobile) -->
       <button @click="socialOpen = !socialOpen" aria-label="Toggle social links"
-              class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#ffdb70] text-black shadow-lg hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-[#ffdb70]/60">
+              class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-600 text-white shadow-lg hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-red-500/60">
         <svg v-if="!socialOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16M12 4v16" />
         </svg>
@@ -386,7 +386,7 @@ html, body, #app {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ffdb70;
+  background: var(--game-red-600);
   border-radius: 5px;
 }
 
@@ -426,7 +426,7 @@ nav a.active-link::after {
   width: 100%;
   height: 4px;
   border-radius: 2px;
-  background-color: #ffdb70;
+  background-color: var(--game-red-600);
 }
 
 nav a.router-link-exact-active:hover,
@@ -466,6 +466,88 @@ html { scroll-padding-top: 100px; }
   font-family: 'Matura MT Script Capitals', 'Segoe Script', 'Brush Script MT', 'Lucida Handwriting', cursive;
   font-weight: 600;
   letter-spacing: 0.02em;
+}
+
+/* ===== Game Theme (Skull Red) Global Utilities ===== */
+:root {
+  --game-red-500: #ef4444;
+  --game-red-600: #dc2626;
+  --game-red-700: #b91c1c;
+  --game-red-800: #991b1b;
+  --game-red-900: #7f1d1d;
+  --game-surface: rgba(18,18,19,0.75);
+  --game-border: rgba(255,255,255,0.08);
+}
+
+/* Glass cards */
+.glass-card {
+  background: var(--game-surface) !important;
+  border: 1px solid var(--game-border) !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04) !important;
+}
+.glass-card-hover:hover {
+  border-color: rgba(239,68,68,0.35) !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.5), 0 0 24px rgba(239,68,68,0.22) !important;
+}
+
+/* Primary buttons */
+.btn-primary {
+  background-image: linear-gradient(90deg, var(--game-red-700), var(--game-red-600), var(--game-red-800)) !important;
+  color: white !important;
+  border: none !important;
+}
+.btn-primary:hover { filter: brightness(1.07); }
+
+/* Outline buttons */
+.btn-outline {
+  border: 1px solid rgba(239,68,68,0.45) !important;
+  color: #fff !important;
+  background: linear-gradient(180deg, rgba(239,68,68,0.05), rgba(0,0,0,0)) !important;
+}
+.btn-outline:hover { border-color: rgba(239,68,68,0.7) !important; }
+
+/* Badges */
+.badge {
+  background: rgba(239,68,68,0.12) !important;
+  color: #fca5a5 !important;
+  border: 1px solid rgba(239,68,68,0.2) !important;
+}
+
+/* Lift effect */
+.hover-lift { transition: transform .25s ease, box-shadow .25s ease; }
+.hover-lift:hover { transform: translateY(-4px); }
+
+/* Shiny text for brand — tuned for skull red theme (BRIGHTER) */
+.brand-shiny {
+  position: relative;
+  background: linear-gradient(90deg,
+    rgba(255, 59, 59, 0.95) 0%,
+    rgba(255, 255, 255, 0.98) 14%,
+    rgba(255, 59, 59, 0.95) 28%
+  ); /* bright red */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 300% 100%;
+  animation: brandShine 3.8s ease-in-out infinite;
+  text-shadow:
+    0 0 10px rgba(255, 59, 59, 0.45),
+    0 0 22px rgba(255, 0, 0, 0.28);
+}
+.dark .brand-shiny {
+  background-image: linear-gradient(90deg,
+    rgba(255, 82, 82, 0.98) 0%,
+    rgba(255, 255, 255, 0.98) 14%,
+    rgba(255, 82, 82, 0.98) 28%
+  );
+}
+@keyframes brandShine {
+  0% { background-position: -200% 0; }
+  50% { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-shiny { animation: none; background-position: 0 0; }
 }
 
 </style>

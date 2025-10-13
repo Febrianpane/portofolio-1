@@ -103,10 +103,10 @@ export default {
         </div>
         <!-- Text (right) -->
         <div class="description-content">
-          <p class="description-text">
+          <p class="description-text shiny-text">
             Hi everyone! My name is <span class="highlight">Febrian Sitorus</span>. I'm a web developer who enjoys crafting delightful user experiences. For me, building software is not only a profession but also an art with aesthetic values.
           </p>
-          <p class="description-text">
+          <p class="description-text shiny-text">
             My job is to build modern, functional, and user-friendly websites with a personal touch. I aim to convey your message and identity in the most creative way possible. If you're interested in working together, feel free to reach out!
           </p>
         </div>
@@ -163,7 +163,7 @@ export default {
       <article
         v-for="c in certs"
         :key="c.id"
-        class="group rounded-xl border border-white/10 bg-white/60 dark:bg-[#1e1e1f]/60 p-4 hover:shadow-lg transition backdrop-blur-sm"
+        class="group rounded-xl border border-white/10 bg-white/60 dark:bg-[#1e1e1f]/60 p-4 hover:shadow-lg transition backdrop-blur-sm cert-card"
       >
         <div class="flex items-start gap-3">
           <img :src="c.logo" :alt="c.issuer" class="w-9 h-9 object-contain opacity-90" />
@@ -176,7 +176,7 @@ export default {
           <img :src="c.image" :alt="c.title" class="w-full h-40 object-cover" />
         </div>
         <div class="mt-3 flex justify-between items-center">
-          <a :href="c.url" target="_blank" rel="noopener" class="text-amber-600 dark:text-amber-300 text-sm hover:underline">View credential</a>
+          <a :href="c.url" target="_blank" rel="noopener" class="text-red-400 dark:text-red-300 text-sm hover:underline">View credential</a>
         </div>
       </article>
     </div>
@@ -558,6 +558,36 @@ export default {
   font-size: 1rem;
 }
 
+/* Shiny Text Effect */
+.shiny-text {
+  position: relative;
+  background: linear-gradient(90deg,
+    rgba(203,213,225,0.78) 0%,
+    rgba(255,255,255,0.96) 16%,
+    rgba(203,213,225,0.78) 32%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 300% 100%;
+  animation: shineText 4.8s ease-in-out infinite;
+  will-change: background-position;
+  text-shadow: 0 0 6px rgba(255,255,255,0.05);
+}
+
+@keyframes shineText {
+  0% { background-position: -200% 0; }
+  50% { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shiny-text {
+    animation: none;
+    background-position: 0 0;
+  }
+}
+
 .highlight {
   color: #fbbf24;
   font-weight: 600;
@@ -610,5 +640,83 @@ export default {
   .card-content {
     padding: 2rem 1.5rem;
   }
+}
+
+/* Certificates — Game Skull Theme */
+.cert-card {
+  position: relative;
+  overflow: hidden;
+  background: rgba(18, 18, 19, 0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+  will-change: transform, box-shadow;
+}
+.cert-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 12px;
+  background: conic-gradient(
+    from 0deg,
+    #7f1d1d,
+    #991b1b,
+    #dc2626,
+    #ef4444,
+    #b91c1c,
+    #7f1d1d
+  );
+  padding: 1px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: .8;
+  filter: blur(10px);
+  z-index: 0;
+  pointer-events: none;
+  animation: cert-border-move 6s linear infinite;
+}
+.cert-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03) 0 2px,
+    transparent 2px 6px
+  );
+  mix-blend-mode: overlay;
+  opacity: .18;
+  pointer-events: none;
+  z-index: 0;
+}
+.cert-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(239,68,68,0.4);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.5), 0 0 28px rgba(239,68,68,0.28);
+}
+.cert-card:hover::before { opacity: .95; filter: blur(8px); }
+
+/* Image wrapper and image motion */
+.cert-card .rounded-lg {
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.06);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(239,68,68,0.12), transparent 55%),
+    radial-gradient(circle at 70% 70%, rgba(185,28,28,0.12), transparent 55%);
+}
+.cert-card img {
+  transition: transform .45s cubic-bezier(.22,1,.36,1), filter .3s ease;
+}
+.cert-card:hover img { transform: scale(1.04); }
+
+/* Title subtle glow */
+.cert-card h3 { text-shadow: 0 1px 10px rgba(239,68,68,0.18); }
+.cert-card a { text-shadow: 0 0 8px rgba(239,68,68,0.35); }
+
+@keyframes cert-border-move {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

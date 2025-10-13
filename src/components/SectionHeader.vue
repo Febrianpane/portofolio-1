@@ -1,11 +1,11 @@
 <template>
   <div :class="wrapperClass">
     <div class="flex items-center gap-3" v-if="align !== 'center'">
-      <span v-if="showAccent" class="hidden md:inline-block h-px w-12 bg-gradient-to-r from-amber-400/70 to-transparent dark:from-amber-200/70"></span>
-      <h3 data-scroll-target class="text-lg md:text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-amber-600 dark:from-amber-200 dark:to-yellow-400">{{ title }}</h3>
+      <span v-if="showAccent" class="hidden md:inline-block h-px w-12 bg-gradient-to-r from-red-500/70 to-transparent dark:from-red-300/70"></span>
+      <h3 data-scroll-target class="text-lg md:text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-red-600 dark:from-red-200 dark:to-red-400">{{ title }}</h3>
     </div>
     <div v-else>
-      <h3 data-scroll-target class="text-lg md:text-2xl font-extrabold tracking-tight text-center bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-amber-600 dark:from-slate-100 dark:to-amber-300">{{ title }}</h3>
+      <h3 data-scroll-target class="text-lg md:text-2xl font-extrabold tracking-tight text-center bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-red-600 dark:from-slate-100 dark:to-red-300">{{ title }}</h3>
     </div>
     <p v-if="subtitle" :class="subtitleClass">{{ subtitle }}</p>
   </div>
